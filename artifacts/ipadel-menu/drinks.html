@@ -9,13 +9,13 @@
     <link rel="icon" type="image/png" href="./assets/ipadel-logo-original.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./menu.css"><link rel="stylesheet" href="./menu-overrides.css"><link rel="stylesheet" href="./premium-motion.css?v=4"><link rel="stylesheet" href="./variant-toggle.css?v=2"><link rel="stylesheet" href="./premium-controls.css?v=1"><link rel="stylesheet" href="./brand-buttons.css?v=1"><link rel="stylesheet" href="./experience-refinement.css?v=1"><link rel="stylesheet" href="./product-readability.css?v=1"><link rel="stylesheet" href="./language-switch.css?v=6">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/tailwind.css?v=1">
   </head>
-  <body class="drinks-page">
-    <header class="site-header">
+  <body class="drinks-page min-h-screen antialiased selection:bg-[#19f5a0] selection:text-[#031326]">
+    <header class="site-header grid grid-cols-[minmax(58px,1fr)_auto_auto] min-[381px]:grid-cols-[minmax(68px,1fr)_auto_auto] min-[641px]:grid-cols-[minmax(112px,1fr)_auto_auto]">
       <a class="brand" href="index.html" aria-label="IPADEL home"><img src="./assets/ipadel-logo-original.png" alt="IPADEL — Start Now" class="brand-mark"></a>
-      <nav class="main-nav" aria-label="Main navigation"><a href="drinks.html" class="nav-link is-active" aria-current="page">Drinks</a><a href="canteen.html" class="nav-link">Canteen <span class="nav-soon">soon</span></a></nav>
+      <nav class="main-nav justify-self-center" aria-label="Main navigation"><a href="drinks.html" class="nav-link is-active" aria-current="page">Drinks</a><a href="canteen.html" class="nav-link">Canteen <span class="nav-soon">soon</span></a></nav>
     <button class="language-toggle" type="button" data-language-toggle aria-label="Switch to Arabic">عربي</button></header>
     <button class="floating-basket-button" type="button" data-action="open-basket" data-testid="memory-basket-open" aria-label="Open Memory Basket">
       <span class="floating-basket-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg><span class="basket-badge" data-basket-units>0</span></span>
@@ -31,9 +31,9 @@
       <section class="menu-section" id="drinks" aria-labelledby="menu-section-title">
         <div class="section-topline reveal"><span>01 / THE MENU</span><span>DRINKS ONLY · SAMPLE MENU</span></div>
         <div class="section-heading reveal"><div><p class="section-kicker">TAKE A BREATHER</p><h2 id="menu-section-title">PICK YOUR<br>RESET<span class="green-period">.</span></h2></div><p class="section-description">Six club-side favorites, shown as a sample.<br>Prices and details are examples only.</p></div>
-        <div class="catalog-toolbar"><div class="filter-list" role="group" aria-label="Filter drinks by category" data-filters></div><label class="search-box"><span class="sr-only">Search drinks</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input type="search" placeholder="Find a drink" data-search autocomplete="off"><kbd aria-hidden="true">/</kbd></label></div>
+        <div class="catalog-toolbar flex items-center justify-between gap-[22px]"><div class="filter-list flex flex-wrap gap-[10px] max-[640px]:flex-nowrap" role="group" aria-label="Filter drinks by category" data-filters></div><label class="search-box flex items-center"><span class="sr-only">Search drinks</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input type="search" placeholder="Find a drink" data-search autocomplete="off"><kbd aria-hidden="true">/</kbd></label></div>
         <div class="demo-notice"><span class="notice-mark" aria-hidden="true">!</span><span><strong>DEMO ONLY</strong> — all six drinks, descriptions and prices are examples for menu presentation. Final club menu may differ.</span></div>
-        <div class="product-grid" data-products aria-live="polite"></div>
+        <div class="product-grid grid grid-cols-1 gap-[13px] min-[901px]:grid-cols-3 max-[640px]:gap-[11px]" data-products aria-live="polite"></div>
         <div class="empty-results" data-empty hidden><span class="empty-index">NO MATCH / 00</span><h3>Nothing on this court.</h3><p>Try another search or switch the category filter.</p><button type="button" class="text-button" data-action="reset-filters">RESET FILTERS <span aria-hidden="true">↗</span></button></div>
       </section>
       <section class="counter-reminder reveal"><span class="counter-reminder-index">KEEP IT PERSONAL / 01</span><div><p class="section-kicker">YOUR LIST, YOUR DEVICE</p><h2>REMEMBER IT<br>AT THE COUNTER.</h2></div><p>Memory Basket is a personal reminder only. Nothing is sent to the club or staff.</p><button type="button" class="memory-outline" data-action="open-basket">OPEN MEMORY BASKET <span aria-hidden="true">↗</span></button></section>

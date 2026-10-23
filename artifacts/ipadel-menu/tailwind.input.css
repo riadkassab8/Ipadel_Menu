@@ -1,0 +1,21 @@
+@import "tailwindcss" source(none);
+@import "./menu.css" layer(components);
+@import "./menu-overrides.css" layer(components);
+@import "./premium-motion.css" layer(components);
+@import "./variant-toggle.css" layer(components);
+@import "./premium-controls.css" layer(components);
+@import "./brand-buttons.css" layer(components);
+@import "./experience-refinement.css" layer(components);
+@import "./product-readability.css" layer(components);
+@import "./language-switch.css" layer(components);
+
+@source "./index.html";
+@source "./drinks.html";
+@source "./canteen.html";
+@source "./js";
+
+@layer utilities {
+  :where(a, button, input, select):focus-visible {
+    @apply outline-none ring-2 ring-emerald-400 ring-offset-2 ring-offset-slate-950;
+  }
+}

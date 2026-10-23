@@ -1,9 +1,10 @@
-# [Project name]
+# IPADEL Digital Menu
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A branded digital drinks menu for IPADEL club visitors, with a private Memory Basket reminder saved only on the customer's device.
 
 ## Run & Operate
 
+- `artifacts/ipadel-menu: web` — run the menu preview workflow
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
@@ -14,6 +15,7 @@ _Replace the heading above with the project's name, and this line with one sente
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- IPADEL menu UI: HTML, CSS, vanilla JavaScript modules, Vite
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
 - Validation: Zod (`zod/v4`), `drizzle-zod`
@@ -22,19 +24,29 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/ipadel-menu/index.html` — menu page structure and metadata
+- `artifacts/ipadel-menu/public/menu.css` — menu styling and responsive layout
+- `artifacts/ipadel-menu/js/data.js` — replaceable sample drinks, variants, and prices
+- `artifacts/ipadel-menu/js/app.js` — filters, details panel, and device-local Memory Basket
+- `artifacts/ipadel-menu/public/assets/` — original IPADEL logo and menu photography
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The menu is a frontend-only experience; it does not call the API server or database.
+- Memory Basket stores only item IDs, variants, and quantities in browser localStorage; it is never submitted or visible to staff.
+- Sample products and prices are intentionally separate from rendering so the real menu can replace them without redesigning the interface.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Browse, search, and filter a small sample drinks menu; inspect item details and save personal reminders.
+- The Canteen is marked as coming soon and contains no food products.
+- Sample prices are illustrative only and must be replaced with confirmed menu data.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Keep the first menu iteration drinks-only.
+- Memory Basket is a personal reminder saved on the customer's device; never send an order to the cashier.
+- Keep real menu content replaceable independently of the interface.
 
 ## Gotchas
 

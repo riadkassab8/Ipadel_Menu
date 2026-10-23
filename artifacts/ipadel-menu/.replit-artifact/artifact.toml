@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "IPADEL Digital Menu"
+description = "A premium, mobile-friendly IPADEL club menu for browsing drinks and keeping a private Memory Basket reminder on the customer’s device. No ordering or payment is sent."
+version = "1.0.0"
+id = "artifacts/ipadel-menu"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23198
+
+[services.development]
+run = "pnpm --filter @workspace/ipadel-menu run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ipadel-menu", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ipadel-menu/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23198"
+BASE_PATH = "/"

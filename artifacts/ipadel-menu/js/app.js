@@ -11,6 +11,7 @@ const search = $("[data-search]");
 const detailPanel = $("[data-detail]");
 const basketPanel = $("[data-basket]");
 const overlay = $("[data-overlay]");
+const basketBody = $("[data-basket-body]");
 const confirmDialog = $("[data-confirm]");
 const toast = $("[data-toast]");
 const catalogEnabled = Boolean(filters && grid && search && detailPanel);
@@ -20,7 +21,7 @@ let activeProduct = null;
 let detailQuantity = 1;
 let basket = readBasket();
 let toastTimer;
-let overlayHideTimer;
+let overlayFrame = 0;
 let lastFocus = null;
 
 function readBasket() {
@@ -86,18 +87,25 @@ function updateFilter() { renderFilters(); renderProducts(); }
 
 function openPanel(panel) {
   if (!panel || !overlay) return;
-  clearTimeout(overlayHideTimer);
-  lastFocus = document.activeElement;
-  overlay.hidden = false;
-  requestAnimationFrame(() => overlay.classList.add("visible"));
+  if (overlayFrame) cancelAnimationFrame(overlayFrame);
+  if (!panel.classList.contains("open")) lastFocus = document.activeElement;
+  overlay.setAttribute("aria-hidden", "false");
   panel.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
   document.body.classList.add("locked");
-  window.setTimeout(() => $(".panel-close", panel)?.focus(), 40);
+  overlayFrame = requestAnimationFrame(() => {
+    overlay.classList.add("visible");
+    overlayFrame = 0;
+  });
+  $(".panel-close", panel)?.focus();
 }
 function closePanels() {
   if (!basketPanel || !overlay) return;
   const wasOpen = basketPanel.classList.contains("open") || Boolean(detailPanel?.classList.contains("open"));
+  if (overlayFrame) {
+    cancelAnimationFrame(overlayFrame);
+    overlayFrame = 0;
+  }
   detailPanel?.classList.remove("open");
   basketPanel.classList.remove("open");
   detailPanel?.setAttribute("aria-hidden", "true");
@@ -105,9 +113,8 @@ function closePanels() {
   confirmDialog?.classList.remove("open");
   confirmDialog?.setAttribute("aria-hidden", "true");
   overlay.classList.remove("visible");
+  overlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("locked");
-  clearTimeout(overlayHideTimer);
-  overlayHideTimer = window.setTimeout(() => { if (overlay) overlay.hidden = true; }, 290);
   if (wasOpen && lastFocus?.isConnected) lastFocus.focus();
 }
 function openDetails(id) {
@@ -153,6 +160,57 @@ function addToBasket(product, quantity = 1, variant = "") {
     requestAnimationFrame(() => badge.classList.add("bump"));
   });
 }
+function basketItemKey(item) { return JSON.stringify([item.id, item.variant || ""]); }
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+function queueBasketEntrance(element) {
+  if (prefersReducedMotion()) {
+    element.classList.remove("is-entering");
+    return;
+  }
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (element.isConnected) element.classList.remove("is-entering");
+  }));
+}
+function createBasketEmpty() {
+  const empty = document.createElement("div");
+  empty.className = "basket-empty is-entering";
+  empty.innerHTML = `<span class="empty-ring" aria-hidden="true">+</span><h3>Your basket is waiting.</h3><p>Explore the drinks menu and save what you would like to remember.</p><a class="text-button basket-menu-link" href="drinks.html">BROWSE DRINKS <span aria-hidden="true">↗</span></a>`;
+  queueBasketEntrance(empty);
+  return empty;
+}
+function ensureEmptyBasket() {
+  if (!basketBody || basket.length || $(".basket-row", basketBody) || $(".basket-empty", basketBody)) return;
+  basketBody.append(createBasketEmpty());
+}
+function beginBasketExit(element) {
+  if (!element || element.classList.contains("is-removing")) return;
+  if (element.contains(document.activeElement)) {
+    const next = element.nextElementSibling?.querySelector("button:not([disabled]),a[href]") ||
+      element.previousElementSibling?.querySelector("button:not([disabled]),a[href]") ||
+      $(".panel-close", basketPanel);
+    next?.focus();
+  }
+  element.inert = true;
+  element.setAttribute("aria-hidden", "true");
+  if (prefersReducedMotion()) {
+    element.remove();
+    return;
+  }
+  element.classList.add("is-removing");
+}
+function createBasketRow(item, product) {
+  const variant = item.variant || "";
+  const row = document.createElement("article");
+  row.className = "basket-row is-entering";
+  row.dataset.basketKey = basketItemKey(item);
+  row.dataset.testid = `basket-item-${product.id}`;
+  row.innerHTML = `<div class="basket-thumb" role="img" aria-label="${escapeHtml(product.name)}"></div><div class="basket-row-info"><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(variant || "Regular")} · ${money(priceFor(product, variant))} each · DEMO</small><div class="basket-row-controls"><button type="button" data-action="basket-minus" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Decrease ${escapeHtml(product.name)} quantity">−</button><output data-quantity aria-label="Quantity">${item.quantity}</output><button type="button" data-action="basket-plus" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Increase ${escapeHtml(product.name)} quantity">+</button><button type="button" class="remove-item" data-action="remove" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Remove ${escapeHtml(product.name)}">remove</button></div></div><strong class="basket-row-total" data-row-total>${money(priceFor(product, variant) * item.quantity)}</strong>`;
+  setProductImage($(".basket-thumb", row));
+  queueBasketEntrance(row);
+  return row;
+}
 function renderBasket() {
   if (!basketPanel) return;
   const units = basket.reduce((sum, item) => sum + item.quantity, 0);
@@ -162,20 +220,44 @@ function renderBasket() {
   }, 0);
   $$("[data-basket-units]").forEach(node => { node.textContent = units; });
   $("[data-basket-unique]").textContent = `${basket.length} ${basket.length === 1 ? "ITEM" : "ITEMS"}`;
-  const body = $("[data-basket-body]");
+  const body = basketBody;
+  if (!body) return;
+  const existingRows = new Map($$(".basket-row", body).map(row => [row.dataset.basketKey, row]));
   if (!basket.length) {
-    body.innerHTML = `<div class="basket-empty"><span class="empty-ring" aria-hidden="true">+</span><h3>Your basket is waiting.</h3><p>Explore the drinks menu and save what you would like to remember.</p><a class="text-button basket-menu-link" href="drinks.html">BROWSE DRINKS <span aria-hidden="true">↗</span></a></div>`;
+    existingRows.forEach(beginBasketExit);
+    ensureEmptyBasket();
     $("[data-basket-foot]").innerHTML = `<p class="basket-privacy">Your list stays on this device. It is <strong>not sent to staff</strong>.</p>`;
     return;
   }
-  body.innerHTML = basket.map(item => {
+  const empty = $(".basket-empty", body);
+  if (empty) beginBasketExit(empty);
+  basket.forEach(item => {
     const product = getProduct(item.id);
-    if (!product) return "";
-    return `<article class="basket-row" data-testid="basket-item-${product.id}"><div class="basket-thumb" role="img" aria-label="${escapeHtml(product.name)}"></div><div class="basket-row-info"><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(item.variant || "Regular")} · ${money(priceFor(product, item.variant))} each · DEMO</small><div class="basket-row-controls"><button type="button" data-action="basket-minus" data-id="${product.id}" data-variant="${escapeHtml(item.variant)}" aria-label="Decrease ${escapeHtml(product.name)} quantity">−</button><output aria-label="Quantity">${item.quantity}</output><button type="button" data-action="basket-plus" data-id="${product.id}" data-variant="${escapeHtml(item.variant)}" aria-label="Increase ${escapeHtml(product.name)} quantity">+</button><button type="button" class="remove-item" data-action="remove" data-id="${product.id}" data-variant="${escapeHtml(item.variant)}" aria-label="Remove ${escapeHtml(product.name)}">remove</button></div></div><strong class="basket-row-total">${money(priceFor(product, item.variant) * item.quantity)}</strong></article>`;
-  }).join("");
-  $$(".basket-thumb", body).forEach(thumb => setProductImage(thumb));
+    if (!product) return;
+    const key = basketItemKey(item);
+    let row = existingRows.get(key);
+    if (row) {
+      existingRows.delete(key);
+      row.classList.remove("is-removing");
+      row.inert = false;
+      row.removeAttribute("aria-hidden");
+    } else {
+      row = createBasketRow(item, product);
+      body.append(row);
+    }
+    const quantityOutput = $("[data-quantity]", row);
+    if (quantityOutput?.textContent !== String(item.quantity)) updateQuantityDisplay(quantityOutput, item.quantity);
+    $("[data-row-total]", row).textContent = money(priceFor(product, item.variant) * item.quantity);
+  });
+  existingRows.forEach(beginBasketExit);
   $("[data-basket-foot]").innerHTML = `<div class="basket-total"><span>ESTIMATED TOTAL · SAMPLE PRICES</span><strong>${money(total)}</strong></div><p class="basket-privacy"><strong>Personal reminder only.</strong> It stays on this device and is <strong>not sent to staff.</strong> Take your list to the counter to order.</p><div class="basket-actions"><button type="button" class="clear-button" data-action="clear">CLEAR BASKET</button><button type="button" class="back-menu" data-action="back-menu">DONE</button></div>`;
 }
+basketBody?.addEventListener("transitionend", event => {
+  const element = event.target;
+  if (!(element instanceof HTMLElement) || event.propertyName !== "opacity" || !element.classList.contains("is-removing")) return;
+  element.remove();
+  ensureEmptyBasket();
+});
 function changeBasket(id, variant, delta) {
   const item = basket.find(entry => entry.id === id && entry.variant === variant);
   if (!item) return;
@@ -200,9 +282,12 @@ function showConfirm() {
 function updateQuantityDisplay(output, quantity) {
   if (!output) return;
   output.textContent = quantity;
-  output.classList.remove("count-pop");
-  void output.offsetWidth;
-  output.classList.add("count-pop");
+  if (prefersReducedMotion() || typeof output.animate !== "function") return;
+  output.getAnimations?.().forEach(animation => animation.cancel());
+  output.animate(
+    [{ opacity: 0.6, transform: "scale(.92)" }, { opacity: 1, transform: "scale(1)" }],
+    { duration: 200, easing: "ease-out" }
+  );
 }
 
 document.addEventListener("click", event => {
@@ -221,7 +306,7 @@ document.addEventListener("click", event => {
   if (action === "remove") { basket = basket.filter(item => !(item.id === id && item.variant === variant)); persistBasket(); showToast("Removed from Memory Basket"); }
   if (action === "clear") showConfirm();
   if (action === "cancel-clear" && confirmDialog) { confirmDialog.classList.remove("open"); confirmDialog.setAttribute("aria-hidden", "true"); $(".clear-button", basketPanel)?.focus(); }
-  if (action === "confirm-clear" && confirmDialog) { basket = []; persistBasket(); confirmDialog.classList.remove("open"); confirmDialog.setAttribute("aria-hidden", "true"); showToast("Memory Basket cleared"); }
+  if (action === "confirm-clear" && confirmDialog) { basket = []; persistBasket(); confirmDialog.classList.remove("open"); confirmDialog.setAttribute("aria-hidden", "true"); $(".panel-close", basketPanel)?.focus(); showToast("Memory Basket cleared"); }
   if (action === "back-menu") closePanels();
   if (action === "reset-filters" && search) { activeCategory = "all"; query = ""; search.value = ""; updateFilter(); }
 });
@@ -240,12 +325,23 @@ if (catalogEnabled) {
 }
 overlay?.addEventListener("click", closePanels);
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && (overlay && !overlay.hidden || confirmDialog?.classList.contains("open"))) closePanels();
+  if (event.key === "Escape" && confirmDialog?.classList.contains("open")) {
+    confirmDialog.classList.remove("open");
+    confirmDialog.setAttribute("aria-hidden", "true");
+    $(".clear-button", basketPanel)?.focus();
+    return;
+  }
+  if (event.key === "Escape" && (detailPanel?.classList.contains("open") || basketPanel?.classList.contains("open"))) closePanels();
   if (event.key === "/" && search && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) { event.preventDefault(); search.focus(); }
   if (event.key === "Enter" && event.target.matches(".product-name[role=button]")) openDetails(event.target.dataset.id);
-  if (event.key === "Tab" && (detailPanel?.classList.contains("open") || basketPanel?.classList.contains("open"))) {
-    const panel = detailPanel?.classList.contains("open") ? detailPanel : basketPanel;
-    const focusable = $$('button:not([disabled]),a[href],select,input,[tabindex="0"]', panel).filter(el => el.offsetParent !== null);
+  if (event.key === "Tab") {
+    const panel = confirmDialog?.classList.contains("open")
+      ? confirmDialog
+      : detailPanel?.classList.contains("open") ? detailPanel
+      : basketPanel?.classList.contains("open") ? basketPanel
+      : null;
+    if (!panel) return;
+    const focusable = $$('button:not([disabled]),a[href],select,input,[tabindex="0"]', panel).filter(el => el.getClientRects().length);
     if (focusable.length && event.shiftKey && document.activeElement === focusable[0]) { event.preventDefault(); focusable.at(-1).focus(); }
     else if (focusable.length && !event.shiftKey && document.activeElement === focusable.at(-1)) { event.preventDefault(); focusable[0].focus(); }
   }

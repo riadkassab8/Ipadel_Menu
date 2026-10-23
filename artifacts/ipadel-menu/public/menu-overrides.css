@@ -9,9 +9,16 @@
   --head: 'Space Grotesk', sans-serif;
   --body: 'Inter', sans-serif;
   --line: rgba(144, 181, 204, .18);
+  --ease-standard: cubic-bezier(.22,1,.36,1);
+  --ease-interactive: cubic-bezier(.2,.8,.2,1);
+  --duration-fast: 220ms;
+  --duration-normal: 350ms;
+  --duration-smooth: 450ms;
+  --duration-panel: 400ms;
+  --duration-backdrop: 300ms;
   font-family: var(--body);
 }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 body { background: var(--deep); color: var(--white); font-family: var(--body); }
 h1,h2,h3,.hero-link-icon,.product-name,.basket-head h2,.detail-content h2,.footer-repeat { font-family: var(--head); }
 .site-header { background: rgba(3,19,38,.94); border-color: rgba(144,181,204,.12); }
@@ -94,20 +101,57 @@ h1,h2,h3,.hero-link-icon,.product-name,.basket-head h2,.detail-content h2,.foote
 .product-visual { display:block; padding:0; border:0; }
 .product-photo { background-image:url('/assets/court-drinks.jpg'); }
 .basket-menu-link { color:var(--white); }
-.reveal { opacity:0; transform:translateY(14px); transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1); transition-delay:calc(var(--card-index, 0) * 45ms); }
+.reveal { opacity:0; transform:translateY(14px); transition:opacity var(--duration-smooth) var(--ease-standard),transform var(--duration-smooth) var(--ease-standard); transition-delay:calc(var(--card-index, 0) * 45ms); }
 .reveal.is-visible { opacity:1; transform:translateY(0); }
 .home-copy,.home-hero .hero-art,.catalog-intro-copy,.catalog-intro-aside,.canteen-page-copy,.canteen-page-hero .canteen-art { animation:entrance .65s both; }
 .home-hero .hero-art,.catalog-intro-aside,.canteen-page-hero .canteen-art { animation-delay:.12s; }
 @keyframes entrance { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-.basket-row,.basket-empty { animation:basket-enter .34s cubic-bezier(.2,.7,.2,1) both; }
 .detail-panel.open .detail-image { animation:detail-image-in .5s cubic-bezier(.2,.7,.2,1) both; }
-.product-card:hover .quick-add { transform:rotate(90deg) scale(1.05); }
-.basket-row-controls output,.count-pop { display:inline-block; animation:quantity-pop .2s ease-out both; }
-@keyframes basket-enter { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 @keyframes detail-image-in { from { opacity:.7; transform:scale(1.035); } to { opacity:1; transform:scale(1); } }
-@keyframes quantity-pop { from { opacity:.6; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
-.hero-link,.memory-outline,.filter-chip,.quick-add,.view-link,.canteen-back,.back-home,.nav-link { transition:color .2s,border-color .2s,background-color .2s,transform .2s; }
-.hero-link:active,.memory-outline:active,.filter-chip:active,.quick-add:active { transform:translateY(1px); }
+.product-card { animation:none; }
+.product-card.reveal.is-visible:hover { transform:translateY(-3px); }
+.product-photo { transform:scale(1); transform-origin:center; transition:transform var(--duration-smooth) var(--ease-standard); }
+.product-card { transition:border-color var(--duration-fast) var(--ease-interactive),transform var(--duration-normal) var(--ease-standard),background-color var(--duration-fast) var(--ease-interactive); }
+.hero-photo { transition:transform var(--duration-smooth) var(--ease-standard); transform:scale(1); }
+.basket-row,.basket-empty { opacity:1; transform:translateY(0); transition:opacity var(--duration-normal) var(--ease-standard),transform var(--duration-normal) var(--ease-standard); }
+.basket-row.is-entering,.basket-empty.is-entering { opacity:0; transform:translateY(8px); }
+.basket-row.is-removing,.basket-empty.is-removing { opacity:0; transform:translateX(12px) scale(.99); pointer-events:none; }
+.basket-row-controls output { display:inline-block; }
+.overlay { opacity:0; visibility:hidden; pointer-events:none; transition:opacity var(--duration-backdrop) ease,visibility 0s linear var(--duration-backdrop); }
+.overlay.visible { opacity:1; visibility:visible; pointer-events:auto; transition:opacity var(--duration-backdrop) ease,visibility 0s; }
+.detail-panel,.basket-panel { opacity:0; pointer-events:none; will-change:transform,opacity; transition:transform var(--duration-panel) var(--ease-standard),opacity var(--duration-panel) ease,visibility 0s linear var(--duration-panel); }
+.detail-panel.open,.basket-panel.open { opacity:1; pointer-events:auto; transition:transform var(--duration-panel) var(--ease-standard),opacity var(--duration-panel) ease,visibility 0s; }
+.confirm-dialog { transform:translate(-50%,-46%) scale(.985); transition:opacity var(--duration-fast) var(--ease-interactive),transform var(--duration-normal) var(--ease-standard),visibility 0s linear var(--duration-normal); }
+.confirm-dialog.open { transform:translate(-50%,-50%) scale(1); transition:opacity var(--duration-fast) var(--ease-interactive),transform var(--duration-normal) var(--ease-standard),visibility 0s; }
+.toast { transition:opacity var(--duration-fast) var(--ease-interactive),transform var(--duration-fast) var(--ease-standard); }
+.nav-link:after { transition:transform var(--duration-fast) var(--ease-interactive); }
+.hero-link,.memory-outline,.filter-chip,.quick-add,.view-link,.canteen-back,.back-home,.nav-link,.memory-trigger,.home-memory-link,.icon-button,.stepper button,.add-memory,.clear-button,.back-menu,.confirm-actions button,.text-button,.canteen-teaser a {
+  transition:color var(--duration-fast) var(--ease-interactive),background-color var(--duration-fast) var(--ease-interactive),border-color var(--duration-fast) var(--ease-interactive),box-shadow var(--duration-fast) var(--ease-interactive),transform var(--duration-fast) var(--ease-interactive);
+}
+.hero-link:active,.memory-outline:active,.filter-chip:active,.quick-add:active,.icon-button:active,.stepper button:active,.add-memory:active,.back-menu:active,.confirm-actions button:active,.memory-trigger:active,.home-memory-link:active { transform:scale(.985); }
+.product-card:hover .quick-add:active { transform:scale(.96); }
+.add-memory:hover,.back-menu:hover,.danger-button:hover { box-shadow:0 8px 24px rgba(25,245,160,.16); }
+.stepper button:hover,.icon-button:hover { background-color:rgba(25,245,160,.08); }
+@media (hover:hover) and (pointer:fine) {
+  .hero-art:hover .hero-photo { transform:scale(1.025); }
+  .product-card:hover .product-photo { transform:scale(1.045); }
+  .product-card:hover .quick-add { transform:rotate(90deg) scale(1.05); }
+}
+@media (hover:none), (pointer:coarse) {
+  .hero-art:hover .hero-photo,.product-card:hover .product-photo { transform:scale(1); }
+  .product-card:hover { transform:none; border-color:rgba(116,165,194,.22); background-color:rgba(7,28,48,.82); }
+  .product-card:hover .quick-add { transform:none; background:transparent; color:var(--lime); }
+  .hero-link:hover { transform:none; background-color:transparent; }
+  .hero-link-primary:hover { background-color:rgba(25,245,160,.09); }
+  .filter-chip:not(.active):hover { border-color:rgba(167,183,200,.25); color:#b9c8d4; }
+  .quick-add:hover { background:transparent; color:var(--lime); }
+  .icon-button:hover { border-color:rgba(200,220,233,.3); color:inherit; background-color:rgba(3,19,38,.72); }
+  .nav-link:hover:not(.is-active) { color:#aab9c8; }
+  .stepper button:hover { color:var(--lime); background-color:transparent; }
+  .add-memory:hover,.back-menu:hover,.danger-button:hover { box-shadow:none; }
+  .product-visual:active .product-photo { transform:scale(1.02); }
+  .product-card:hover .quick-add:active { transform:scale(.96); }
+}
 @media(max-width:900px) {
   .home-hero { min-height:620px; grid-template-columns:.88fr 1.12fr; padding-left:5vw; padding-right:5vw; gap:4vw; }
   .home-copy h1 { font-size:clamp(76px,10vw,108px); }
@@ -155,4 +199,5 @@ h1,h2,h3,.hero-link-icon,.product-name,.basket-head h2,.detail-content h2,.foote
   html { scroll-behavior:auto; }
   *,*:before,*:after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; scroll-behavior:auto!important; }
   .reveal { opacity:1; transform:none; }
+  .basket-row.is-entering,.basket-empty.is-entering { opacity:1; transform:none; }
 }

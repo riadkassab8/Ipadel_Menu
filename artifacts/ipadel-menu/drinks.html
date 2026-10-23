@@ -10,7 +10,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/tailwind.css?v=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+                emerald: {
+                  400: '#34d399',
+                }
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="./menu.css">
+    <link rel="stylesheet" href="./menu-overrides.css">
+    <link rel="stylesheet" href="./premium-motion.css">
+    <link rel="stylesheet" href="./variant-toggle.css">
+    <link rel="stylesheet" href="./premium-controls.css">
+    <link rel="stylesheet" href="./brand-buttons.css">
+    <link rel="stylesheet" href="./experience-refinement.css">
+    <link rel="stylesheet" href="./product-readability.css">
+    <link rel="stylesheet" href="./language-switch.css">
   </head>
   <body class="drinks-page min-h-screen antialiased selection:bg-[#19f5a0] selection:text-[#031326]">
     <header class="site-header grid grid-cols-[minmax(58px,1fr)_auto_auto] min-[381px]:grid-cols-[minmax(68px,1fr)_auto_auto] min-[641px]:grid-cols-[minmax(112px,1fr)_auto_auto]">

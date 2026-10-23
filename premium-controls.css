@@ -1,0 +1,14 @@
+.variant-toggle { grid-template-columns:repeat(2,1fr); gap:4px; min-height:52px; padding:4px; border:1px solid rgba(144,181,204,.22); border-radius:4px; background:rgba(3,19,38,.72); box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 10px 24px rgba(0,0,0,.16); }
+.variant-toggle-option { position:relative; border-radius:2px; line-height:1.1; }
+.variant-toggle-option strong { margin-top:2px; font-weight:700; }
+.variant-toggle-option:hover { color:var(--white); background:rgba(25,245,160,.08); transform:none; }
+.variant-toggle-option.is-selected { color:var(--deep); background:linear-gradient(135deg,#19f5a0,#42ffc0); box-shadow:0 5px 16px rgba(25,245,160,.18),inset 0 1px 0 rgba(255,255,255,.28); }
+.variant-toggle-option.is-selected:hover { color:var(--deep); background:linear-gradient(135deg,#2af7aa,#57ffc8); }
+.stepper { border-radius:3px; background:rgba(3,19,38,.35); box-shadow:inset 0 0 0 1px rgba(255,255,255,.02); }
+.stepper button { transition:color 220ms ease,background-color 220ms ease,transform 220ms cubic-bezier(.22,1,.36,1); }
+.stepper button:hover { background:rgba(25,245,160,.08); transform:translateY(-1px); }
+.add-memory { position:relative; border-radius:3px; background:linear-gradient(135deg,#19f5a0,#38f9b4); box-shadow:0 8px 22px rgba(25,245,160,.12),inset 0 1px 0 rgba(255,255,255,.25); letter-spacing:.13em; }
+.add-memory span { display:inline-block; margin-left:12px; transition:transform 260ms cubic-bezier(.22,1,.36,1); }
+.add-memory:hover span { transform:translate(3px,-2px); }
+.panel-close { border-radius:3px; background:rgba(3,19,38,.56); backdrop-filter:blur(8px); }
+@media(max-width:640px) { .variant-toggle { min-height:54px; } .variant-toggle-option { font-size:10px; } .variant-toggle-option strong { font-size:11px; } }

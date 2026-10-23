@@ -1,0 +1,31 @@
+/* Product card readability: intentionally larger type for quick scanning on court-side screens. */
+.drinks-page .product-card { min-height:190px; }
+.drinks-page .product-visual { min-height:188px; }
+.drinks-page .product-info { padding:22px 21px 18px; }
+.drinks-page .product-category { font-size:12px; letter-spacing:.17em; }
+.drinks-page .product-name { margin:8px 0 7px; font-size:clamp(32px,3vw,40px); line-height:.95; letter-spacing:0; }
+.drinks-page .product-description { font-size:14px; line-height:1.45; min-height:40px; }
+.drinks-page .product-price { font-size:14px; }
+.drinks-page .price-demo { font-size:10px; }
+.drinks-page .view-link { font-size:11px; min-height:32px; }
+.drinks-page .quick-add { width:34px; height:34px; font-size:22px; }
+.drinks-page .card-actions { gap:14px; }
+@media(max-width:900px) {
+  .drinks-page .product-card { min-height:178px; }
+  .drinks-page .product-visual { min-height:176px; }
+  .drinks-page .product-info { padding:19px 17px 15px; }
+  .drinks-page .product-name { font-size:34px; }
+}
+@media(max-width:640px) {
+  .drinks-page .product-card { min-height:164px; grid-template-columns:122px minmax(0,1fr); }
+  .drinks-page .product-visual { min-height:162px; }
+  .drinks-page .product-info { padding:16px 15px 13px; }
+  .drinks-page .product-category { font-size:10px; }
+  .drinks-page .product-name { margin:6px 0 5px; font-size:30px; line-height:.96; }
+  .drinks-page .product-description { font-size:11px; line-height:1.35; min-height:30px; }
+  .drinks-page .product-price { font-size:12px; }
+  .drinks-page .price-demo { font-size:9px; }
+  .drinks-page .view-link { font-size:10px; min-height:30px; }
+  .drinks-page .quick-add { width:32px; height:32px; font-size:20px; }
+  .drinks-page .card-actions { gap:8px; }
+}

@@ -1,0 +1,6 @@
+In-app Browser JS state was preserved. Completed actions were not rolled back; refresh stale UI handles and continue only the remaining work.
+{"code":"NAVIGATION_FAILED","method":"browser_navigate","callIndex":2,"nextAction":"inspect_before_retry"}
+ERROR NAVIGATION_FAILED
+{"control":{"documentRevision":"rev_378f50fb-a750-4915-ba5a-f1c2e8d5e0de","error":{"code":"NAVIGATION_FAILED","retryable":false},"requiresSnapshot":false,"status":"error","tabId":"tab_f9ebc5b1-4c79-4a4b-ab43-2eb5a010ecdc"},"kind":"error","page":{"contentTrust":"untrusted","url":"http://127.0.0.1:43271/drinks.html"},"schema":"manus.browser/v1","warnings":["ERR_CONNECTION_REFUSED (-102)"]}
+ERROR NAVIGATION_FAILED
+{"control":{"documentRevision":"rev_378f50fb-a750-4915-ba5a-f1c2e8d5e0de","error":{"code":"NAVIGATION_FAILED","retryable":false},"requiresSnapshot":false,"status":"error","tabId":"tab_f9ebc5b1-4c79-4a4b-ab43-2eb5a010ecdc"},"kind":"error","page":{"contentTrust":"untrusted","url":"http://127.0.0.1:43271/drinks.html"},"schema":"manus.browser/v1","warnings":["ERR_CONNECTION_REFUSED (-102)"]}

@@ -1,0 +1,113 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>IPADEL browser QA</title>
+<style>
+  html,body{margin:0;width:100%;height:100%;font:14px monospace;background:#111;color:#ddd}
+  #app-frame{position:fixed;inset:0;width:100vw;height:100vh;border:0;opacity:.01}
+  #results{position:fixed;left:8px;bottom:8px;z-index:5;max-width:90vw;max-height:40vh;overflow:auto;white-space:pre-wrap;background:#111;color:#fff;padding:8px}
+</style>
+<iframe id="app-frame" src="../artifacts/ipadel-menu/drinks.html" title="IPADEL test target"></iframe>
+<pre id="results">WAITING</pre>
+<script>
+const frame = document.getElementById("app-frame");
+const output = document.getElementById("results");
+let firstLoad = true;
+const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+const results = [];
+function record(name, passed, detail = "") {
+  results.push(`${passed ? "PASS" : "FAIL"} ${name}${detail ? ` — ${detail}` : ""}`);
+  output.textContent = results.join("\n");
+}
+function expect(name, condition, detail = "") {
+  record(name, Boolean(condition), detail);
+  if (!condition) throw new Error(`${name}${detail ? `: ${detail}` : ""}`);
+}
+frame.addEventListener("load", async () => {
+  if (firstLoad) {
+    firstLoad = false;
+    try { frame.contentWindow.localStorage.removeItem("ipadel-memory-basket-v1"); } catch {}
+    frame.contentWindow.location.reload();
+    return;
+  }
+  await runTests();
+}, { once: false });
+async function runTests() {
+  try {
+    await sleep(60);
+    let win = frame.contentWindow;
+    let doc = frame.contentDocument;
+    expect("drinks page and product rendering", doc.querySelectorAll(".product-card").length === 6, `cards=${doc.querySelectorAll(".product-card").length}`);
+    const reveal = doc.querySelector(".product-card-reveal.reveal");
+    expect("entrance wrapper separated from hover card", Boolean(reveal && !reveal.querySelector(".product-card").classList.contains("reveal")));
+
+    const quickAdd = id => {
+      const button = doc.querySelector(`[data-action="quick-add"][data-id="${id}"]`);
+      if (!button) throw new Error(`Missing quick-add for ${id}`);
+      button.click();
+    };
+    quickAdd("espresso");
+    quickAdd("cappuccino");
+    doc.querySelector('[data-action="open-basket"]').click();
+    await sleep(520);
+    let espressoRow = doc.querySelector('[data-testid="basket-item-espresso"]');
+    let cappuccinoRow = doc.querySelector('[data-testid="basket-item-cappuccino"]');
+    expect("basket creates only saved product rows", Boolean(espressoRow && cappuccinoRow));
+    const stableEspressoRow = espressoRow;
+    espressoRow.querySelector('[data-action="basket-plus"]').click();
+    espressoRow.querySelector('[data-action="basket-plus"]').click();
+    expect("quantity changes retain unaffected and active row DOM", stableEspressoRow === doc.querySelector('[data-testid="basket-item-espresso"]') && cappuccinoRow === doc.querySelector('[data-testid="basket-item-cappuccino"]'));
+    expect("quantity and subtotal recalculate", espressoRow.querySelector("[data-quantity]").textContent === "3" && doc.querySelector("[data-basket-total]").textContent === "200 EGP", `qty=${espressoRow.querySelector("[data-quantity]").textContent}; total=${doc.querySelector("[data-basket-total]").textContent}`);
+    cappuccinoRow.querySelector('[data-action="remove"]').click();
+    await sleep(450);
+    expect("removing one product preserves the other row", stableEspressoRow === doc.querySelector('[data-testid="basket-item-espresso"]') && !doc.querySelector('[data-testid="basket-item-cappuccino"]'));
+    let stored = false;
+    try { stored = JSON.parse(win.localStorage.getItem("ipadel-memory-basket-v1") || "[]").some(item => item.id === "espresso" && item.quantity === 3); } catch {}
+    expect("basket quantity is persisted locally", stored);
+
+    const reloadDone = new Promise(resolve => frame.addEventListener("load", resolve, { once: true }));
+    win.location.reload();
+    await reloadDone;
+    await sleep(80);
+    win = frame.contentWindow;
+    doc = frame.contentDocument;
+    espressoRow = doc.querySelector('[data-testid="basket-item-espresso"]');
+    expect("basket survives page reload", Boolean(espressoRow && espressoRow.querySelector("[data-quantity]").textContent === "3"));
+
+    const openBasket = () => doc.querySelector('[data-action="open-basket"]').click();
+    const closeBasket = () => doc.querySelector('[data-action="close-basket"]').click();
+    openBasket();
+    await sleep(140);
+    closeBasket();
+    await sleep(45);
+    openBasket();
+    await sleep(75);
+    closeBasket();
+    await sleep(520);
+    expect("rapid close/reopen leaves drawer and backdrop closed", !doc.querySelector("[data-basket]").classList.contains("open") && !doc.querySelector("[data-overlay]").classList.contains("rendered") && doc.querySelector("[data-overlay]").getAttribute("aria-hidden") === "true");
+
+    openBasket();
+    await sleep(480);
+    doc.dispatchEvent(new win.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    await sleep(450);
+    expect("Escape closes the drawer and backdrop", !doc.querySelector("[data-basket]").classList.contains("open") && !doc.querySelector("[data-overlay]").classList.contains("rendered"));
+
+    openBasket();
+    await sleep(450);
+    doc.querySelector("[data-overlay]").click();
+    await sleep(450);
+    expect("backdrop click closes the drawer", !doc.querySelector("[data-basket]").classList.contains("open") && !doc.querySelector("[data-overlay]").classList.contains("rendered"));
+
+    openBasket();
+    await sleep(450);
+    doc.querySelector('[data-action="clear"]').click();
+    doc.querySelector('[data-action="confirm-clear"]').click();
+    await sleep(450);
+    expect("clear confirmation empties basket without stale rows", doc.querySelectorAll(".basket-row").length === 0 && doc.querySelector(".basket-empty") !== null && doc.querySelector("[data-basket-units]").textContent === "0");
+    expect("mobile/desktop viewport does not overflow", doc.documentElement.scrollWidth <= win.innerWidth + 1, `scrollWidth=${doc.documentElement.scrollWidth}, viewport=${win.innerWidth}`);
+    record("all browser interaction checks completed", true);
+  } catch (error) {
+    record("browser QA stopped", false, error.message);
+  }
+  document.documentElement.dataset.qaStatus = results.some(line => line.startsWith("FAIL")) ? "failed" : "passed";
+}
+</script>

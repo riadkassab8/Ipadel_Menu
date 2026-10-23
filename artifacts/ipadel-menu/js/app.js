@@ -1,9 +1,9 @@
-import { categories, products } from "./data.js";
+const { categories, products } = window.IPADEL_MENU_DATA;
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const STORAGE_KEY = "ipadel-memory-basket-v1";
-const imagePath = "/assets/court-drinks.jpg";
+const imagePath = "./assets/court-drinks.jpg";
 const fallbackStyle = "radial-gradient(ellipse at 72% 42%,rgba(25,245,160,.24),transparent 22%),linear-gradient(135deg,#15334a,#061629)";
 const filters = $("[data-filters]");
 const grid = $("[data-products]");
@@ -12,6 +12,7 @@ const detailPanel = $("[data-detail]");
 const basketPanel = $("[data-basket]");
 const overlay = $("[data-overlay]");
 const basketBody = $("[data-basket-body]");
+const basketFoot = $("[data-basket-foot]");
 const confirmDialog = $("[data-confirm]");
 const toast = $("[data-toast]");
 const catalogEnabled = Boolean(filters && grid && search && detailPanel);
@@ -21,7 +22,12 @@ let activeProduct = null;
 let detailQuantity = 1;
 let basket = readBasket();
 let toastTimer;
-let overlayFrame = 0;
+let overlayState = "closed";
+let overlayRevision = 0;
+const basketRows = new Map();
+let basketEmpty = null;
+let basketFootReady = false;
+let previousBasketHasItems = null;
 let lastFocus = null;
 
 function readBasket() {
@@ -68,7 +74,7 @@ function renderProducts() {
   grid.hidden = list.length === 0;
   if (emptyResults) emptyResults.hidden = list.length > 0;
   grid.innerHTML = list.map((product, index) => `
-    <article class="product-card reveal" style="--card-index:${index}" data-testid="product-${product.id}">
+    <div class="product-card-reveal reveal" style="--card-index:${index}"><article class="product-card" data-testid="product-${product.id}">
       <button type="button" class="product-visual" data-action="details" data-id="${product.id}" aria-label="View ${escapeHtml(product.name)} details">
         <span class="product-photo" style="background-position:${product.imagePosition}" aria-hidden="true"></span>
       </button>
@@ -79,33 +85,65 @@ function renderProducts() {
           <div class="card-actions"><button type="button" class="view-link" data-action="details" data-id="${product.id}">VIEW DETAILS</button><button type="button" class="quick-add" data-action="quick-add" data-id="${product.id}" aria-label="Save ${escapeHtml(product.name)} to Memory Basket">+</button></div>
         </div>
       </div>
-    </article>`).join("");
+    </article></div>`).join("");
   $$(".product-photo", grid).forEach(photo => setProductImage(photo, photo.style.backgroundPosition || "center"));
   observeReveals(grid);
 }
 function updateFilter() { renderFilters(); renderProducts(); }
 
+function finishOverlayClose(revision) {
+  if (revision !== overlayRevision || overlayState !== "closing") return;
+  overlay.classList.remove("rendered");
+  overlayState = "closed";
+}
+function watchOverlayExit(revision) {
+  let finished = false;
+  let fallbackTimer;
+  const cleanup = () => {
+    window.clearTimeout(fallbackTimer);
+    overlay.removeEventListener("transitionend", onTransition);
+    overlay.removeEventListener("transitioncancel", onTransition);
+  };
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    cleanup();
+    finishOverlayClose(revision);
+  };
+  const onTransition = event => {
+    if (event.target === overlay && event.propertyName === "opacity") finish();
+  };
+  overlay.addEventListener("transitionend", onTransition);
+  overlay.addEventListener("transitioncancel", onTransition);
+  fallbackTimer = window.setTimeout(finish, 500);
+  const transitions = overlay.getAnimations?.().filter(animation => animation.transitionProperty === "opacity") || [];
+  if (transitions.length) Promise.allSettled(transitions.map(animation => animation.finished)).then(finish);
+  else requestAnimationFrame(finish);
+}
 function openPanel(panel) {
   if (!panel || !overlay) return;
-  if (overlayFrame) cancelAnimationFrame(overlayFrame);
-  if (!panel.classList.contains("open")) lastFocus = document.activeElement;
+  const anotherPanelWasOpen = Boolean(detailPanel?.classList.contains("open") || basketPanel?.classList.contains("open"));
+  if (!anotherPanelWasOpen && overlayState === "closed") lastFocus = document.activeElement;
+  const revision = ++overlayRevision;
+  overlayState = "opening";
   overlay.setAttribute("aria-hidden", "false");
-  panel.classList.add("open");
+  overlay.classList.add("rendered");
   panel.setAttribute("aria-hidden", "false");
   document.body.classList.add("locked");
-  overlayFrame = requestAnimationFrame(() => {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (revision !== overlayRevision || overlayState !== "opening") return;
+    panel.classList.add("open");
     overlay.classList.add("visible");
-    overlayFrame = 0;
-  });
-  $(".panel-close", panel)?.focus();
+    overlayState = "open";
+    $(".panel-close", panel)?.focus();
+  }));
 }
 function closePanels() {
   if (!basketPanel || !overlay) return;
   const wasOpen = basketPanel.classList.contains("open") || Boolean(detailPanel?.classList.contains("open"));
-  if (overlayFrame) {
-    cancelAnimationFrame(overlayFrame);
-    overlayFrame = 0;
-  }
+  if (!wasOpen && overlayState === "closed") return;
+  const revision = ++overlayRevision;
+  overlayState = "closing";
   detailPanel?.classList.remove("open");
   basketPanel.classList.remove("open");
   detailPanel?.setAttribute("aria-hidden", "true");
@@ -115,6 +153,8 @@ function closePanels() {
   overlay.classList.remove("visible");
   overlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("locked");
+  if (overlay.classList.contains("rendered")) watchOverlayExit(revision);
+  else overlayState = "closed";
   if (wasOpen && lastFocus?.isConnected) lastFocus.focus();
 }
 function openDetails(id) {
@@ -131,6 +171,7 @@ function openDetails(id) {
   variantSelect.innerHTML = (activeProduct.variants || []).map((variant, index) =>
     `<option value="${escapeHtml(variant.name)}"${index === 0 ? " selected" : ""}>${escapeHtml(variant.name)} · ${money(variant.price)}</option>`
   ).join("");
+  renderVariantToggle(activeProduct);
   updateDetailPrice();
   $("[data-detail-quantity]").textContent = detailQuantity;
   setProductImage($("[data-detail-image]"), activeProduct.imagePosition);
@@ -141,8 +182,26 @@ function updateDetailPrice() {
   if (!activeProduct) return;
   const variant = $("[data-variant]")?.value || "";
   $("[data-detail-price]").textContent = `${money(priceFor(activeProduct, variant))} · DEMO`;
+  $$(`[data-variant-toggle] [data-variant-value]`).forEach(button => {
+    const selected = button.dataset.variantValue === variant;
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-checked", String(selected));
+  });
 }
 
+function renderVariantToggle(product) {
+  const select = $("[data-variant]");
+  const toggle = $("[data-variant-toggle]");
+  if (!select || !toggle) return;
+  toggle.innerHTML = (product.variants || []).map((variant, index) => 
+    `<button type="button" class="variant-toggle-option${index === 0 ? " is-selected" : ""}" data-variant-value="${escapeHtml(variant.name)}" role="radio" aria-checked="${index === 0}"><span>${escapeHtml(variant.name)}</span><strong>${money(variant.price)}</strong></button>`).join("");
+  toggle.onclick = event => {
+    const button = event.target.closest("[data-variant-value]");
+    if (!button) return;
+    select.value = button.dataset.variantValue;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  };
+}
 function persistBasket() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(basket)); }
   catch { showToast("Could not save on this device"); }
@@ -180,9 +239,62 @@ function createBasketEmpty() {
   queueBasketEntrance(empty);
   return empty;
 }
+function hasLiveBasketRows() {
+  return [...basketRows.values()].some(row => row.isConnected && !row.classList.contains("is-removing"));
+}
+function restoreElement(element) {
+  element.classList.remove("is-removing");
+  element.inert = false;
+  element.removeAttribute("aria-hidden");
+}
+function finishBasketExit(element) {
+  if (!element.classList.contains("is-removing")) return;
+  if (element.classList.contains("basket-row")) {
+    const key = element.dataset.basketKey;
+    const itemStillExists = basket.some(item => basketItemKey(item) === key);
+    if (basketRows.get(key) === element && !itemStillExists) {
+      basketRows.delete(key);
+      element.remove();
+    }
+  } else if (element === basketEmpty && !basket.length && !hasLiveBasketRows()) {
+    basketEmpty = null;
+    element.remove();
+  }
+  ensureEmptyBasket();
+}
+function watchBasketExit(element) {
+  let finished = false;
+  const cleanup = () => {
+    element.removeEventListener("transitionend", onTransition);
+    element.removeEventListener("transitioncancel", onTransition);
+  };
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    cleanup();
+    finishBasketExit(element);
+  };
+  const onTransition = event => {
+    if (event.target === element && event.propertyName === "opacity") finish();
+  };
+  element.addEventListener("transitionend", onTransition);
+  element.addEventListener("transitioncancel", onTransition);
+  const transitions = element.getAnimations?.().filter(animation => animation.transitionProperty === "opacity") || [];
+  if (transitions.length) Promise.allSettled(transitions.map(animation => animation.finished)).then(finish);
+  else requestAnimationFrame(finish);
+}
 function ensureEmptyBasket() {
-  if (!basketBody || basket.length || $(".basket-row", basketBody) || $(".basket-empty", basketBody)) return;
-  basketBody.append(createBasketEmpty());
+  if (!basketBody) return;
+  if (basket.length || hasLiveBasketRows()) {
+    if (basketEmpty?.isConnected) beginBasketExit(basketEmpty);
+    return;
+  }
+  if (basketEmpty?.isConnected) {
+    restoreElement(basketEmpty);
+    return;
+  }
+  basketEmpty = createBasketEmpty();
+  basketBody.append(basketEmpty);
 }
 function beginBasketExit(element) {
   if (!element || element.classList.contains("is-removing")) return;
@@ -195,10 +307,13 @@ function beginBasketExit(element) {
   element.inert = true;
   element.setAttribute("aria-hidden", "true");
   if (prefersReducedMotion()) {
+    if (element.classList.contains("basket-row")) basketRows.delete(element.dataset.basketKey);
+    if (element === basketEmpty) basketEmpty = null;
     element.remove();
     return;
   }
   element.classList.add("is-removing");
+  watchBasketExit(element);
 }
 function createBasketRow(item, product) {
   const variant = item.variant || "";
@@ -206,10 +321,45 @@ function createBasketRow(item, product) {
   row.className = "basket-row is-entering";
   row.dataset.basketKey = basketItemKey(item);
   row.dataset.testid = `basket-item-${product.id}`;
-  row.innerHTML = `<div class="basket-thumb" role="img" aria-label="${escapeHtml(product.name)}"></div><div class="basket-row-info"><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(variant || "Regular")} · ${money(priceFor(product, variant))} each · DEMO</small><div class="basket-row-controls"><button type="button" data-action="basket-minus" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Decrease ${escapeHtml(product.name)} quantity">−</button><output data-quantity aria-label="Quantity">${item.quantity}</output><button type="button" data-action="basket-plus" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Increase ${escapeHtml(product.name)} quantity">+</button><button type="button" class="remove-item" data-action="remove" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Remove ${escapeHtml(product.name)}">remove</button></div></div><strong class="basket-row-total" data-row-total>${money(priceFor(product, variant) * item.quantity)}</strong>`;
+  row.innerHTML = `<div class="basket-thumb" role="img" aria-label="${escapeHtml(product.name)}"></div><div class="basket-row-info"><strong>${escapeHtml(product.name)}</strong><small data-row-meta></small><div class="basket-row-controls"><button type="button" data-action="basket-minus" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Decrease ${escapeHtml(product.name)} quantity">−</button><output data-quantity aria-label="Quantity"></output><button type="button" data-action="basket-plus" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Increase ${escapeHtml(product.name)} quantity">+</button><button type="button" class="remove-item" data-action="remove" data-id="${escapeHtml(product.id)}" data-variant="${escapeHtml(variant)}" aria-label="Remove ${escapeHtml(product.name)}">remove</button></div></div><strong class="basket-row-total" data-row-total></strong>`;
   setProductImage($(".basket-thumb", row));
+  updateBasketRow(row, item, product);
   queueBasketEntrance(row);
   return row;
+}
+function updateBasketRow(row, item, product) {
+  const variant = item.variant || "";
+  const unitPrice = priceFor(product, variant);
+  const quantityOutput = $("[data-quantity]", row);
+  if (quantityOutput?.textContent !== String(item.quantity)) updateQuantityDisplay(quantityOutput, item.quantity);
+  const meta = $("[data-row-meta]", row);
+  const metaText = `${variant || "Regular"} · ${money(unitPrice)} each · DEMO`;
+  if (meta && meta.textContent !== metaText) meta.textContent = metaText;
+  const rowTotal = $("[data-row-total]", row);
+  const totalText = money(unitPrice * item.quantity);
+  if (rowTotal && rowTotal.textContent !== totalText) rowTotal.textContent = totalText;
+}
+function ensureBasketFoot() {
+  if (!basketFoot || basketFootReady) return;
+  basketFoot.innerHTML = `<div class="basket-total" data-basket-total-wrap><span>ESTIMATED TOTAL · SAMPLE PRICES</span><strong data-basket-total></strong></div><p class="basket-privacy" data-basket-privacy></p><div class="basket-actions" data-basket-actions><button type="button" class="clear-button" data-action="clear">CLEAR BASKET</button><button type="button" class="back-menu" data-action="back-menu">DONE</button></div>`;
+  basketFootReady = true;
+}
+function renderBasketFoot(total) {
+  ensureBasketFoot();
+  if (!basketFootReady) return;
+  const hasItems = basket.length > 0;
+  const totalWrap = $("[data-basket-total-wrap]", basketFoot);
+  const actions = $("[data-basket-actions]", basketFoot);
+  const privacy = $("[data-basket-privacy]", basketFoot);
+  $("[data-basket-total]", basketFoot).textContent = money(total);
+  totalWrap.hidden = !hasItems;
+  actions.hidden = !hasItems;
+  if (previousBasketHasItems !== hasItems) {
+    privacy.innerHTML = hasItems
+      ? `<strong>Personal reminder only.</strong> It stays on this device and is <strong>not sent to staff.</strong> Take your list to the counter to order.`
+      : `Your list stays on this device. It is <strong>not sent to staff</strong>.`;
+    previousBasketHasItems = hasItems;
+  }
 }
 function renderBasket() {
   if (!basketPanel) return;
@@ -220,44 +370,30 @@ function renderBasket() {
   }, 0);
   $$("[data-basket-units]").forEach(node => { node.textContent = units; });
   $("[data-basket-unique]").textContent = `${basket.length} ${basket.length === 1 ? "ITEM" : "ITEMS"}`;
-  const body = basketBody;
-  if (!body) return;
-  const existingRows = new Map($$(".basket-row", body).map(row => [row.dataset.basketKey, row]));
-  if (!basket.length) {
-    existingRows.forEach(beginBasketExit);
-    ensureEmptyBasket();
-    $("[data-basket-foot]").innerHTML = `<p class="basket-privacy">Your list stays on this device. It is <strong>not sent to staff</strong>.</p>`;
-    return;
-  }
-  const empty = $(".basket-empty", body);
-  if (empty) beginBasketExit(empty);
+  if (!basketBody) return;
+  const activeKeys = new Set();
   basket.forEach(item => {
     const product = getProduct(item.id);
     if (!product) return;
     const key = basketItemKey(item);
-    let row = existingRows.get(key);
-    if (row) {
-      existingRows.delete(key);
-      row.classList.remove("is-removing");
-      row.inert = false;
-      row.removeAttribute("aria-hidden");
-    } else {
+    activeKeys.add(key);
+    let row = basketRows.get(key);
+    if (!row) {
       row = createBasketRow(item, product);
-      body.append(row);
+      basketRows.set(key, row);
+      basketBody.append(row);
+    } else {
+      if (row.parentNode !== basketBody) basketBody.append(row);
+      restoreElement(row);
     }
-    const quantityOutput = $("[data-quantity]", row);
-    if (quantityOutput?.textContent !== String(item.quantity)) updateQuantityDisplay(quantityOutput, item.quantity);
-    $("[data-row-total]", row).textContent = money(priceFor(product, item.variant) * item.quantity);
+    updateBasketRow(row, item, product);
   });
-  existingRows.forEach(beginBasketExit);
-  $("[data-basket-foot]").innerHTML = `<div class="basket-total"><span>ESTIMATED TOTAL · SAMPLE PRICES</span><strong>${money(total)}</strong></div><p class="basket-privacy"><strong>Personal reminder only.</strong> It stays on this device and is <strong>not sent to staff.</strong> Take your list to the counter to order.</p><div class="basket-actions"><button type="button" class="clear-button" data-action="clear">CLEAR BASKET</button><button type="button" class="back-menu" data-action="back-menu">DONE</button></div>`;
-}
-basketBody?.addEventListener("transitionend", event => {
-  const element = event.target;
-  if (!(element instanceof HTMLElement) || event.propertyName !== "opacity" || !element.classList.contains("is-removing")) return;
-  element.remove();
+  basketRows.forEach((row, key) => {
+    if (!activeKeys.has(key)) beginBasketExit(row);
+  });
   ensureEmptyBasket();
-});
+  renderBasketFoot(total);
+}
 function changeBasket(id, variant, delta) {
   const item = basket.find(entry => entry.id === id && entry.variant === variant);
   if (!item) return;

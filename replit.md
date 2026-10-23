@@ -24,10 +24,12 @@ A branded digital drinks menu for IPADEL club visitors, with a private Memory Ba
 
 ## Where things live
 
-- `artifacts/ipadel-menu/index.html` — menu page structure and metadata
-- `artifacts/ipadel-menu/public/menu.css` — menu styling and responsive layout
+- `artifacts/ipadel-menu/index.html` — landing page
+- `artifacts/ipadel-menu/drinks.html` — dedicated drinks catalog
+- `artifacts/ipadel-menu/canteen.html` — Canteen coming-soon page
+- `artifacts/ipadel-menu/public/menu.css` and `menu-overrides.css` — shared styles, motion, and responsive layouts
 - `artifacts/ipadel-menu/js/data.js` — replaceable sample drinks, variants, and prices
-- `artifacts/ipadel-menu/js/app.js` — filters, details panel, and device-local Memory Basket
+- `artifacts/ipadel-menu/js/app.js` — page-aware catalog, details panel, reveals, and device-local Memory Basket
 - `artifacts/ipadel-menu/public/assets/` — original IPADEL logo and menu photography
 
 ## Architecture decisions
@@ -35,6 +37,7 @@ A branded digital drinks menu for IPADEL club visitors, with a private Memory Ba
 - The menu is a frontend-only experience; it does not call the API server or database.
 - Memory Basket stores only item IDs, variants, and quantities in browser localStorage; it is never submitted or visible to staff.
 - Sample products and prices are intentionally separate from rendering so the real menu can replace them without redesigning the interface.
+- Vite uses three HTML entry points so each page can be opened and refreshed directly.
 
 ## Product
 

@@ -63,6 +63,13 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        index: path.resolve(import.meta.dirname, 'index.html'),
+        drinks: path.resolve(import.meta.dirname, 'drinks.html'),
+        canteen: path.resolve(import.meta.dirname, 'canteen.html'),
+      },
+    },
   },
   server: {
     port,

@@ -4,134 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#061b32">
-    <title>IPADEL | Club-side drinks</title>
-    <meta name="description" content="The IPADEL club-side drinks menu. Browse, save your picks, and order at the counter.">
+    <title>IPADEL | Good drinks. Great games.</title>
+    <meta name="description" content="A club-side menu for the break between matches. Browse drinks and keep a personal reminder on this device.">
     <link rel="icon" type="image/png" href="/assets/ipadel-logo-original.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/menu.css">
     <link rel="stylesheet" href="/menu-overrides.css">
   </head>
-  <body>
+  <body class="home-page">
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="IPADEL menu home">
-        <img src="/assets/ipadel-logo-original.png" alt="IPADEL — Start Now" class="brand-mark">
-      </a>
+      <a class="brand" href="index.html" aria-label="IPADEL home"><img src="/assets/ipadel-logo-original.png" alt="IPADEL — Start Now" class="brand-mark"></a>
       <nav class="main-nav" aria-label="Main navigation">
-        <a href="#drinks" class="nav-link is-active" data-nav="drinks">Drinks</a>
-        <a href="#canteen" class="nav-link" data-nav="canteen">Canteen <span class="nav-soon">soon</span></a>
+        <a href="drinks.html" class="nav-link">Drinks</a>
+        <a href="canteen.html" class="nav-link">Canteen <span class="nav-soon">soon</span></a>
       </nav>
       <button class="memory-trigger" type="button" data-action="open-basket" data-testid="memory-basket-open" aria-label="Open Memory Basket">
-        <span class="memory-trigger-label">Memory Basket</span>
-        <span class="basket-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
-          <span class="basket-badge" data-basket-units>0</span>
-        </span>
+        <span class="memory-trigger-label">Memory Basket</span><span class="basket-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg><span class="basket-badge" data-basket-units>0</span></span>
       </button>
     </header>
 
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <div class="eyebrow"><span class="eyebrow-line"></span> GOOD FOOD. GREAT GAMES.</div>
+      <section class="home-hero" aria-labelledby="hero-title">
+        <div class="home-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> THE IPADEL CLUB MENU</p>
           <h1 id="hero-title">FUEL<br>YOUR <em>GAME.</em></h1>
-          <p class="hero-description">A little reset between sets.<br>Find your next courtside refresh.</p>
+          <p class="hero-description">Good drinks. Great games.</p>
           <div class="hero-actions">
-            <a href="#drinks" class="hero-link hero-link-primary"><span class="hero-link-icon">01</span><span><strong>DRINKS</strong><small>COFFEE · COLD · MORE</small></span><span class="arrow">↗</span></a>
-            <a href="#canteen" class="hero-link"><span class="hero-link-icon">02</span><span><strong>CANTEEN</strong><small>MENU COMING SOON</small></span><span class="arrow">↗</span></a>
+            <a href="drinks.html" class="hero-link hero-link-primary"><span class="hero-link-icon">01</span><span><strong>DRINKS</strong><small>REFRESH YOUR GAME</small></span><span class="arrow" aria-hidden="true">↗</span></a>
+            <a href="canteen.html" class="hero-link"><span class="hero-link-icon">02</span><span><strong>CANTEEN</strong><small>MENU COMING SOON</small></span><span class="arrow" aria-hidden="true">↗</span></a>
           </div>
-          <div class="counter-note"><span class="counter-dot"></span><span><strong>ORDER AT THE COUNTER</strong><small>Save a reminder here. Your list stays on this device.</small></span></div>
+          <button type="button" class="home-memory-link" data-action="open-basket"><span class="memory-link-mark" aria-hidden="true">+</span><span><strong>Memory Basket</strong><small>Your personal counter reminder, saved on this device only.</small></span><span class="memory-link-count" data-basket-units>0</span></button>
         </div>
         <div class="hero-art" role="img" aria-label="Refreshing drinks beside the padel court">
-          <div class="court-frame"></div>
-          <div class="hero-photo"></div>
+          <div class="court-frame"></div><div class="hero-photo"></div>
           <div class="hero-art-meta"><span>BETWEEN MATCHES</span><span>IPADEL CLUB / 01</span></div>
           <div class="art-stamp"><span>PAUSE.</span><span>RESET.</span><span>PLAY.</span></div>
           <div class="art-side-label">THE CLUB-SIDE MENU</div>
         </div>
       </section>
-
-      <section class="menu-section" id="drinks" aria-labelledby="drinks-title">
-        <div class="section-topline"><span>01 / THE MENU</span><span>DRINKS ONLY · SAMPLE MENU</span></div>
-        <div class="section-heading">
-          <div><p class="section-kicker">REFRESH YOURSELF</p><h2 id="drinks-title">DRINKS<span class="green-period">.</span></h2></div>
-          <p class="section-description">Good games work up a thirst.<br>Pick a favorite for your next break.</p>
-        </div>
-        <div class="catalog-toolbar">
-          <div class="filter-list" role="group" aria-label="Filter drinks by category" data-filters></div>
-          <label class="search-box">
-            <span class="sr-only">Search drinks</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
-            <input type="search" placeholder="Find a drink" data-search autocomplete="off">
-            <kbd>/</kbd>
-          </label>
-        </div>
-        <div class="demo-notice"><span class="notice-mark">!</span><span><strong>Sample menu</strong> — example drinks and prices for layout only. Final menu details may differ.</span></div>
-        <div class="product-grid" data-products aria-live="polite"></div>
-        <div class="empty-results" data-empty hidden>
-          <span class="empty-index">NO MATCH / 00</span>
-          <h3>Nothing on this court.</h3>
-          <p>Try another search or switch the category filter.</p>
-          <button type="button" class="text-button" data-action="reset-filters">RESET FILTERS <span>↗</span></button>
-        </div>
-      </section>
-
-      <section class="canteen-section" id="canteen" aria-labelledby="canteen-title">
-        <div class="canteen-copy">
-          <p class="section-kicker">02 / NEXT UP</p>
-          <h2 id="canteen-title">THE<br>CANTEEN<span class="green-period">.</span></h2>
-          <p>More to enjoy between matches.<br>We're getting the next chapter ready.</p>
-          <a href="#drinks" class="canteen-back">BACK TO DRINKS <span>↗</span></a>
-        </div>
-        <div class="canteen-art">
-          <div class="canteen-orbit orbit-one"></div><div class="canteen-orbit orbit-two"></div>
-          <span class="canteen-number">02</span>
-          <div class="coming-stamp"><span>MENU</span><strong>COMING<br>SOON</strong></div>
-          <span class="canteen-caption">A NEW CLUB-SIDE RITUAL</span>
-        </div>
+      <section class="home-note reveal" aria-label="A note about your reminder">
+        <span class="section-kicker">A MOMENT BETWEEN MATCHES</span>
+        <p>Find your next courtside refresh. Keep a note of it here, then order at the counter.</p>
+        <span class="home-note-index">IPADEL / CLUB-SIDE</span>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <a href="#top" class="footer-brand"><img src="/assets/ipadel-logo-original.png" alt="IPADEL — Start Now"></a>
-      <div class="footer-mantra">GOOD FOOD.<br><strong>GREAT GAMES.</strong></div>
-      <div class="footer-repeat">PLAY.<br>EAT.<br><em>REPEAT.</em></div>
-      <div class="footer-label">BAR & CANTEEN <span>IPADEL / CLUB MENU</span></div>
+    <footer class="site-footer reveal">
+      <a href="index.html" class="footer-brand"><img src="/assets/ipadel-logo-original.png" alt="IPADEL — Start Now"></a>
+      <div class="footer-mantra">GOOD DRINKS.<br><strong>GREAT GAMES.</strong></div>
+      <div class="footer-repeat">PLAY.<br>RESET.<br><em>REPEAT.</em></div>
+      <div class="footer-label">CLUB-SIDE MENU <span>IPADEL / START NOW</span></div>
     </footer>
 
     <div class="overlay" data-overlay hidden></div>
-    <section class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detail-title" aria-hidden="true" data-detail data-testid="drink-details">
-      <button type="button" class="icon-button panel-close" data-action="close-detail" aria-label="Close drink details">×</button>
-      <div class="detail-image" data-detail-image></div>
-      <div class="detail-content">
-        <p class="section-kicker" data-detail-category></p>
-        <h2 id="detail-title" data-detail-title></h2>
-        <p class="detail-description" data-detail-description></p>
-        <div class="detail-price-row"><span>EXAMPLE PRICE</span><strong data-detail-price></strong></div>
-        <div class="variant-wrap" data-variant-wrap><label for="variant-select">SIZE</label><select id="variant-select" data-variant></select></div>
-        <div class="detail-controls">
-          <div class="stepper" aria-label="Quantity">
-            <button type="button" data-action="detail-minus" aria-label="Decrease quantity">−</button><output data-detail-quantity>1</output><button type="button" data-action="detail-plus" aria-label="Increase quantity">+</button>
-          </div>
-          <button class="add-memory" type="button" data-action="add-detail">ADD TO MEMORY <span>↗</span></button>
-        </div>
-        <p class="local-note"><span></span> PERSONAL REMINDER · STORED ON THIS DEVICE</p>
-      </div>
-    </section>
-
     <aside class="basket-panel" role="dialog" aria-modal="true" aria-labelledby="basket-title" aria-hidden="true" data-basket data-testid="memory-basket">
-      <div class="basket-head">
-        <div><p class="section-kicker">YOUR PICKS <span data-basket-unique>0 ITEMS</span></p><h2 id="basket-title">MEMORY<br>BASKET<span class="green-period">.</span></h2></div>
-        <button type="button" class="icon-button panel-close" data-action="close-basket" aria-label="Close Memory Basket">×</button>
-      </div>
-      <div class="basket-body" data-basket-body></div>
-      <div class="basket-foot" data-basket-foot></div>
+      <div class="basket-head"><div><p class="section-kicker">YOUR PICKS <span data-basket-unique>0 ITEMS</span></p><h2 id="basket-title">MEMORY<br>BASKET<span class="green-period">.</span></h2></div><button type="button" class="icon-button panel-close" data-action="close-basket" aria-label="Close Memory Basket">×</button></div>
+      <div class="basket-body" data-basket-body></div><div class="basket-foot" data-basket-foot></div>
     </aside>
-
     <div class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-hidden="true" data-confirm>
-      <p class="section-kicker">PERSONAL LIST</p><h2 id="confirm-title">Clear your<br>Memory Basket?</h2>
-      <p>This only removes the reminder saved on this device.</p>
+      <p class="section-kicker">PERSONAL LIST</p><h2 id="confirm-title">Clear your<br>Memory Basket?</h2><p>This only removes the reminder saved on this device.</p>
       <div class="confirm-actions"><button type="button" class="quiet-button" data-action="cancel-clear">KEEP PICKS</button><button type="button" class="danger-button" data-action="confirm-clear">CLEAR LIST</button></div>
     </div>
     <div class="toast" role="status" aria-live="polite" data-toast></div>

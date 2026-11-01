@@ -1,4 +1,4 @@
-// Replaceable demonstration catalog. Prices and descriptions are fictional examples.
+// IPADEL drinks menu catalog.
 window.IPADEL_MENU_DATA = {
   categories: [
     { id: "all", label: "All drinks" },

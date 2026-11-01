@@ -51,8 +51,7 @@ html[dir="rtl"] body { direction:rtl; }
 html[dir="rtl"] .eyebrow { flex-direction:row-reverse; justify-content:flex-start; }
 html[dir="rtl"] .section-topline, html[dir="rtl"] .section-heading, html[dir="rtl"] .catalog-toolbar, html[dir="rtl"] .counter-reminder, html[dir="rtl"] .site-footer, html[dir="rtl"] .canteen-teaser { direction:rtl; }
 html[dir="rtl"] .section-topline, html[dir="rtl"] .footer-label { text-align:right; }
-html[dir="rtl"] .section-description, html[dir="rtl"] .demo-notice, html[dir="rtl"] .product-info, html[dir="rtl"] .detail-content, html[dir="rtl"] .basket-panel, html[dir="rtl"] .confirm-dialog { text-align:right; }
-html[dir="rtl"] .demo-notice { border-left:0; border-right:2px solid var(--lime); }
+html[dir="rtl"] .section-description, html[dir="rtl"] .product-info, html[dir="rtl"] .detail-content, html[dir="rtl"] .basket-panel, html[dir="rtl"] .confirm-dialog { text-align:right; }
 html[dir="rtl"] .product-card::after { right:auto; left:11px; }
 html[dir="rtl"] .product-card::before { left:auto; right:0; }
 html[dir="rtl"] .product-bottom, html[dir="rtl"] .detail-price-row, html[dir="rtl"] .variant-wrap { direction:rtl; }
@@ -81,10 +80,10 @@ html[dir="rtl"] .floating-basket-button { left:auto; right:max(22px,env(safe-are
   .floating-basket-button { right:auto; left:max(16px,env(safe-area-inset-left)); bottom:max(18px,env(safe-area-inset-bottom)); }
   html[dir="rtl"] .floating-basket-button { right:max(16px,env(safe-area-inset-right)); left:auto; }
   html[dir="rtl"] .product-card::after { left:8px; }
-  html[dir="rtl"] .demo-notice { text-align:right; }
+
 }
 
-/* Experimental Signature Mixes showcase. */
+/* Signature Mixes showcase. */
 .signature-section { max-width:1304px; margin:0 auto 42px; padding:24px 0 0; border-top:1px solid rgba(25,245,160,.22); }
 .signature-heading { display:flex; align-items:end; justify-content:space-between; gap:28px; margin-bottom:18px; }
 .signature-heading h2 { margin:0; font:700 clamp(38px,5vw,66px)/.86 var(--head); letter-spacing:-.04em; }

@@ -82,7 +82,7 @@ function renderProducts() {
       <div class="product-info"><span class="product-category">${escapeHtml(categories.find(item => item.id === product.category)?.label || "Drink")}</span>
         <h3 class="product-name" tabindex="0" role="button" data-action="details" data-id="${product.id}">${escapeHtml(product.name)}</h3>
         <p class="product-description">${escapeHtml(product.description)}</p>
-        <div class="product-bottom"><span class="product-price">${money(product.price)}<span class="price-demo">DEMO</span></span>
+        <div class="product-bottom"><span class="product-price">${money(product.price)}</span>
           <div class="card-actions"><button type="button" class="view-link" data-action="details" data-id="${product.id}">VIEW DETAILS</button><button type="button" class="quick-add" data-action="quick-add" data-id="${product.id}" aria-label="Save ${escapeHtml(product.name)} to Memory Basket">+</button></div>
         </div>
       </div>
@@ -102,7 +102,7 @@ function renderSignatureProducts() {
     if (!product) return "";
     return `<article class="signature-card" style="--signature-index:${index}">
       <button class="signature-visual" type="button" data-action="details" data-id="${product.id}" aria-label="View ${escapeHtml(concept.name)} details"><span class="signature-photo" style="background-position:${concept.position}" aria-hidden="true"></span><span class="signature-orbit" aria-hidden="true"></span><span class="signature-badge">${concept.badge}</span></button>
-      <div class="signature-info"><span class="signature-kicker">${escapeHtml(product.category)} / CONCEPT</span><h3>${escapeHtml(concept.name)}</h3><p>${escapeHtml(concept.note)}</p><div><strong>${money(product.price)}</strong><button type="button" class="signature-add" data-action="quick-add" data-id="${product.id}" aria-label="Save ${escapeHtml(concept.name)} to Memory Basket">ADD +</button></div></div>
+      <div class="signature-info"><span class="signature-kicker">${escapeHtml(product.category)} / SIGNATURE</span><h3>${escapeHtml(concept.name)}</h3><p>${escapeHtml(concept.note)}</p><div><strong>${money(product.price)}</strong><button type="button" class="signature-add" data-action="quick-add" data-id="${product.id}" aria-label="Save ${escapeHtml(concept.name)} to Memory Basket">ADD +</button></div></div>
     </article>`;
   }).join("");
   $$(".signature-photo", signatureRail).forEach(photo => setProductImage(photo, photo.style.backgroundPosition || "center"));
@@ -200,7 +200,7 @@ function openDetails(id) {
 function updateDetailPrice() {
   if (!activeProduct) return;
   const variant = $("[data-variant]")?.value || "";
-  $("[data-detail-price]").textContent = `${money(priceFor(activeProduct, variant))} · DEMO`;
+  $("[data-detail-price]").textContent = money(priceFor(activeProduct, variant));
   $$(`[data-variant-toggle] [data-variant-value]`).forEach(button => {
     const selected = button.dataset.variantValue === variant;
     button.classList.toggle("is-selected", selected);
@@ -352,7 +352,7 @@ function updateBasketRow(row, item, product) {
   const quantityOutput = $("[data-quantity]", row);
   if (quantityOutput?.textContent !== String(item.quantity)) updateQuantityDisplay(quantityOutput, item.quantity);
   const meta = $("[data-row-meta]", row);
-  const metaText = `${variant || "Regular"} · ${money(unitPrice)} each · DEMO`;
+  const metaText = `${variant || "Regular"} · ${money(unitPrice)} each`;
   if (meta && meta.textContent !== metaText) meta.textContent = metaText;
   const rowTotal = $("[data-row-total]", row);
   const totalText = money(unitPrice * item.quantity);
@@ -360,7 +360,7 @@ function updateBasketRow(row, item, product) {
 }
 function ensureBasketFoot() {
   if (!basketFoot || basketFootReady) return;
-  basketFoot.innerHTML = `<div class="basket-total" data-basket-total-wrap><span>ESTIMATED TOTAL · SAMPLE PRICES</span><strong data-basket-total></strong></div><p class="basket-privacy" data-basket-privacy></p><div class="basket-actions" data-basket-actions><button type="button" class="clear-button" data-action="clear">CLEAR BASKET</button><button type="button" class="back-menu" data-action="back-menu">DONE</button></div>`;
+  basketFoot.innerHTML = `<div class="basket-total" data-basket-total-wrap><span>ESTIMATED TOTAL</span><strong data-basket-total></strong></div><p class="basket-privacy" data-basket-privacy></p><div class="basket-actions" data-basket-actions><button type="button" class="clear-button" data-action="clear">CLEAR BASKET</button><button type="button" class="back-menu" data-action="back-menu">DONE</button></div>`;
   basketFootReady = true;
 }
 function renderBasketFoot(total) {

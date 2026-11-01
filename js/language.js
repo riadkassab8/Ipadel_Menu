@@ -20,14 +20,14 @@
     'keep picks':'احتفظ بالاختيارات','clear list':'إفراغ القائمة','items':'عناصر','item':'عنصر',
     'ipadel / club menu — 01':'آيبادل / قائمة النادي — ٠١','the drinks':'المشروبات','bar.':'','for the pause between points.':'لاستراحة قصيرة بين النقاط.',
     'find a favorite, save it for the counter.':'اختر ما تحب واحفظه لتطلبه من الكاونتر.','back to ipadel':'العودة إلى آيبادل','01 / the menu':'٠١ / القائمة',
-    'drinks only · sample menu':'مشروبات فقط · قائمة تجريبية','take a breather':'التقط أنفاسك','pick your':'اختر','reset':'مشروبك',
-    'six club-side favorites, shown as a sample.':'ستة مشروبات مفضلة معروضة على سبيل التجربة.','prices and details are examples only.':'الأسعار والتفاصيل أمثلة توضيحية فقط.',
-    'filter drinks by category':'تصفية المشروبات حسب الفئة','search drinks':'ابحث عن المشروبات','find a drink':'ابحث عن مشروب','demo only':'للتجربة فقط',
-    '— all six drinks, descriptions and prices are examples for menu presentation. final club menu may differ.':'— المشروبات الستة والأوصاف والأسعار أمثلة للعرض فقط، وقد تختلف القائمة النهائية للنادي.',
+    'take a breather':'التقط أنفاسك','pick your':'اختر','reset':'مشروبك',
+
+    'filter drinks by category':'تصفية المشروبات حسب الفئة','search drinks':'ابحث عن المشروبات','find a drink':'ابحث عن مشروب',
+
     'nothing on this court.':'لا توجد نتائج هنا.','no match / 00':'لا توجد نتائج / ٠٠','try another search or switch the category filter.':'جرّب كلمة بحث أخرى أو غيّر تصنيف المشروبات.','reset filters':'إعادة ضبط التصفية',
     'keep it personal / 01':'خاصة بك / ٠١','your list, your device':'قائمتك على جهازك','remember it':'تذكّره','at the counter.':'عند الكاونتر.',
     'memory basket is a personal reminder only. nothing is sent to the club or staff.':'سلة التذكّر للتذكير الشخصي فقط. لا تُرسل أي بيانات إلى النادي أو العاملين فيه.',
-    'drinks bar':'ركن المشروبات','example price':'سعر توضيحي','size':'الحجم','choose size':'اختر الحجم','quantity':'الكمية',
+    'drinks bar':'ركن المشروبات','price':'السعر','size':'الحجم','choose size':'اختر الحجم','quantity':'الكمية',
     'decrease quantity':'تقليل الكمية','increase quantity':'زيادة الكمية','close drink details':'إغلاق تفاصيل المشروب','add to memory':'أضف إلى التذكّر',
     'personal reminder · stored on this device':'تذكير شخصي · محفوظ على هذا الجهاز','ipadel / club menu — 02':'آيبادل / قائمة النادي — ٠٢',
     'the':'','your next break':'استراحتك القادمة','is loading.':'قيد التحضير.','our canteen menu':'قائمة الكانتينا','is coming soon.':'قريبًا.',
@@ -35,7 +35,7 @@
     'the canteen / next up':'الكانتينا / قريبًا','until then':'إلى ذلك الحين','take a breather. find your next courtside refresh.':'التقط أنفاسك واختر مشروبك المنعش القادم بجانب الملعب.',
     'explore the drinks bar':'اكتشف ركن المشروبات','canteen / soon':'الكانتينا / قريبًا','your basket is waiting.':'سلتك بانتظارك.',
     'explore the drinks menu and save what you would like to remember.':'تصفّح قائمة المشروبات واحفظ ما تريد تذكّره.','browse drinks':'تصفّح المشروبات',
-    'estimated total · sample prices':'الإجمالي التقديري · أسعار تجريبية','clear basket':'إفراغ السلة','done':'تم','personal reminder only.':'تذكير شخصي فقط.',
+    'estimated total':'الإجمالي التقديري','clear basket':'إفراغ السلة','done':'تم','personal reminder only.':'تذكير شخصي فقط.',
     'it stays on this device and is':'يبقى على هذا الجهاز ولا يتم','not sent to staff.':'إرساله إلى العاملين.','take your list to the counter to order.':'أظهر قائمتك عند الكاونتر لإتمام الطلب.',
     'your list stays on this device. it is':'تبقى قائمتك على هذا الجهاز ولا يتم','not sent to staff':'إرسالها إلى العاملين',
     'added to memory basket':'تمت الإضافة إلى سلة التذكّر','removed from memory basket':'تمت الإزالة من سلة التذكّر','memory basket cleared':'تم إفراغ سلة التذكّر',
@@ -46,9 +46,9 @@
     'chilled coffee over ice. cool head, quick restart.':'قهوة باردة مع الثلج لانتعاش سريع واستعداد من جديد.',
     'a bright citrus blend made for a sunny court-side break.':'مزيج حمضيات منعش لاستراحة مشمسة بجانب الملعب.',
     'simple, crisp hydration between games.':'مياه منعشة لترطيبك بين المباريات.','a sparkling pick-me-up when the match goes long.':'مشروب غازي يمنحك النشاط عندما تطول المباراة.',
-    'remove':'إزالة','drink':'مشروب','regular':'عادي','large':'كبير','single':'فردي','double':'مزدوج','demo':'تجريبي','view details':'عرض التفاصيل',
-    'signature':'مميز','signature mixes':'الخلطات المميزة','experiment 01':'تجربة ٠١','creative blends for the pause between points.':'خلطات مبتكرة لاستراحة ما بين النقاط.','concept names and recipes are temporary.':'الأسماء والوصفات تجريبية مؤقتًا.','concept':'تجريبي','green point':'النقطة الخضراء','match reset':'استراحة المباراة','golden set':'الشوط الذهبي','citrus · mint · spark':'حمضيات · نعناع · انتعاش','cold brew · cloud · ice':'قهوة باردة · رغوة · ثلج','energy · citrus · fizz':'طاقة · حمضيات · فوران','add +':'أضف +',
-    'clear basket':'إفراغ السلة','done':'تم','estimated total · sample prices':'الإجمالي التقديري · أسعار تجريبية',
+    'remove':'إزالة','drink':'مشروب','regular':'عادي','large':'كبير','single':'فردي','double':'مزدوج','view details':'عرض التفاصيل',
+    'signature':'مميز','signature mixes':'الخلطات المميزة','ipadel / signature 01':'آيبادل / الخلطات المميزة ٠١','creative blends for the pause between points.':'خلطات مبتكرة لاستراحة ما بين النقاط.','green point':'النقطة الخضراء','match reset':'استراحة المباراة','golden set':'الشوط الذهبي','citrus · mint · spark':'حمضيات · نعناع · انتعاش','cold brew · cloud · ice':'قهوة باردة · رغوة · ثلج','energy · citrus · fizz':'طاقة · حمضيات · فوران','add +':'أضف +',
+    'clear basket':'إفراغ السلة','done':'تم',
     'your basket is waiting.':'سلتك بانتظارك.','browse drinks':'تصفّح المشروبات','personal reminder only.':'تذكير شخصي فقط.',
     'take your list to the counter to order.':'اعرض قائمتك عند الكاونتر لإتمام الطلب.','not sent to staff.':'لا تُرسل إلى العاملين.',
     'your list stays on this device. it is':'تبقى قائمتك على هذا الجهاز ولا يتم','not sent to staff':'إرسالها إلى العاملين',
@@ -56,7 +56,6 @@
     'memory basket cleared':'تم إفراغ سلة التذكّر','could not save on this device':'تعذّر الحفظ على هذا الجهاز',
     'court side':'بجانب الملعب','court side / personal reset':'بجانب الملعب / استراحة شخصية','match point':'نقطة الحسم',
     'remember your reset':'تذكّر استراحتك','personal reminder · stored on this device':'تذكير شخصي · محفوظ على هذا الجهاز',
-    'sample menu':'قائمة تجريبية','example price':'سعر توضيحي','choose size':'اختر الحجم','size':'الحجم',
     'view':'عرض','details':'التفاصيل','no match / 00':'لا توجد نتائج / ٠٠'
   };
   const normalize = value => value.replace(/\s+/g, ' ').trim().toLocaleLowerCase('en');
@@ -65,10 +64,6 @@
     if (Object.prototype.hasOwnProperty.call(words, key)) return words[key];
     let m = value.match(/^\s*(Single|Double|Regular|Large)\s*[·•]\s*(\d+(?:\.\d+)?)\s*EGP\s*$/i);
     if (m) return `${words[normalize(m[1])]} · ${m[2]} ج.م`;
-    m = value.match(/^\s*(Regular|Single|Double|Large)?\s*[·•]\s*(\d+(?:\.\d+)?)\s*EGP\s+each\s*[·•]\s*DEMO\s*$/i);
-    if (m) return `${m[1] ? `${words[normalize(m[1])]} · ` : ''}${m[2]} ج.م للقطعة · تجريبي`;
-    m = value.match(/^\s*(\d+(?:\.\d+)?)\s*EGP\s*[·•]\s*DEMO\s*$/i);
-    if (m) return `${m[1]} ج.م · تجريبي`;
     m = value.match(/^\s*(\d+(?:\.\d+)?)\s*EGP\s*$/i);
     if (m) return `${m[1]} ج.م`;
     m = value.match(/^\s*(\d+)\s+(ITEM|ITEMS)\s*$/i);
@@ -106,7 +101,7 @@
     document.title = translate(document.title);
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.content = page.endsWith('drinks.html')
-      ? 'تصفّح قائمة مشروبات آيبادل التجريبية، واحفظ تذكيرًا شخصيًا على جهازك للطلب من الكاونتر.'
+      ? 'تصفّح قائمة مشروبات آيبادل، واحفظ تذكيرًا شخصيًا على جهازك للطلب من الكاونتر.'
       : page.endsWith('canteen.html')
         ? 'قائمة كانتينا آيبادل قريبًا. تصفّح المشروبات في هذه الأثناء.'
         : 'قائمة النادي لاستراحة ما بين المباريات. تصفّح المشروبات واحفظ تذكيرًا شخصيًا على هذا الجهاز.';

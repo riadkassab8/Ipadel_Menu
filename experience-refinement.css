@@ -113,3 +113,9 @@ html[dir="rtl"] .signature-heading > p { text-align:left; }
 html[dir="rtl"] .signature-info { text-align:right; }
 html[dir="rtl"] .signature-visual { border-right:0; border-left:1px solid rgba(25,245,160,.22); }
 @media(prefers-reduced-motion:reduce) { .signature-card { animation:none; } .signature-photo { transition:none; } }
+
+
+/* Mobile breathing room before the search and category controls. */
+@media(max-width:640px) {
+  .drinks-page .signature-section { margin-bottom:46px; }
+}

@@ -6,23 +6,10 @@
     <meta name="theme-color" content="#061b32">
     <title>THE CANTEEN | IPADEL</title>
     <meta name="description" content="The IPADEL canteen menu is coming soon. Browse drinks in the meantime.">
-    <link rel="icon" type="image/png" href="./assets/ipadel-logo-original.png">
+    <link rel="icon" type="image/png" href="./assets/ipadel-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-                emerald: {
-                  400: '#34d399',
-                }
-            }
-          }
-        }
-      }
-    </script>
+    <link rel="stylesheet" href="./assets/tailwind.css">
     <link rel="stylesheet" href="./menu.css">
     <link rel="stylesheet" href="./menu-overrides.css">
     <link rel="stylesheet" href="./premium-motion.css">
@@ -34,7 +21,7 @@
     <link rel="stylesheet" href="./language-switch.css">
   </head>
   <body class="canteen-page min-h-screen antialiased selection:bg-[#19f5a0] selection:text-[#031326]">
-    <header class="site-header grid grid-cols-[minmax(58px,1fr)_auto_auto] min-[381px]:grid-cols-[minmax(68px,1fr)_auto_auto] min-[641px]:grid-cols-[minmax(112px,1fr)_auto_auto]"><a class="brand" href="index.html" aria-label="IPADEL home"><img src="./assets/ipadel-logo-original.png" alt="IPADEL — Start Now" class="brand-mark"></a><nav class="main-nav justify-self-center" aria-label="Main navigation"><a href="drinks.html" class="nav-link">Drinks</a><a href="canteen.html" class="nav-link is-active" aria-current="page">Canteen <span class="nav-soon">soon</span></a></nav><button class="language-toggle" type="button" data-language-toggle aria-label="Switch to Arabic">عربي</button></header>
+    <header class="site-header grid grid-cols-[minmax(58px,1fr)_auto_auto] min-[381px]:grid-cols-[minmax(68px,1fr)_auto_auto] min-[641px]:grid-cols-[minmax(112px,1fr)_auto_auto]"><a class="brand" href="index.html" aria-label="IPADEL home"><img src="./assets/ipadel-logo.png" alt="IPADEL — Start Now" class="brand-mark"></a><nav class="main-nav justify-self-center" aria-label="Main navigation"><a href="drinks.html" class="nav-link">Drinks</a><a href="canteen.html" class="nav-link is-active" aria-current="page">Canteen <span class="nav-soon">soon</span></a></nav><button class="language-toggle" type="button" data-language-toggle aria-label="Switch to Arabic">عربي</button></header>
     <button class="floating-basket-button" type="button" data-action="open-basket" data-testid="memory-basket-open" aria-label="Open Memory Basket">
       <span class="floating-basket-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg><span class="basket-badge" data-basket-units>0</span></span>
       <span class="sr-only memory-trigger-label">Memory Basket</span>
@@ -47,7 +34,7 @@
       </section>
       <section class="canteen-teaser reveal"><span>UNTIL THEN</span><p>Take a breather. Find your next courtside refresh.</p><a href="drinks.html">EXPLORE THE DRINKS BAR <span aria-hidden="true">↗</span></a></section>
     </main>
-    <footer class="site-footer reveal"><a href="index.html" class="footer-brand"><img src="./assets/ipadel-logo-original.png" alt="IPADEL — Start Now"></a><div class="footer-mantra">GOOD DRINKS.<br><strong>GREAT GAMES.</strong></div><div class="footer-repeat">PLAY.<br>RESET.<br><em>REPEAT.</em></div><div class="footer-label">CANTEEN / SOON <span>IPADEL / CLUB MENU</span></div></footer>
+    <footer class="site-footer reveal"><a href="index.html" class="footer-brand"><img src="./assets/ipadel-logo.png" alt="IPADEL — Start Now"></a><div class="footer-mantra">GOOD DRINKS.<br><strong>GREAT GAMES.</strong></div><div class="footer-repeat">PLAY.<br>RESET.<br><em>REPEAT.</em></div><div class="footer-label">CANTEEN / SOON <span>IPADEL / CLUB MENU</span></div></footer>
     <div class="overlay" data-overlay aria-hidden="true"></div>
     <aside class="basket-panel" role="dialog" aria-modal="true" aria-labelledby="basket-title" aria-hidden="true" data-basket data-testid="memory-basket"><div class="basket-head"><div><p class="section-kicker">YOUR PICKS <span data-basket-unique>0 ITEMS</span></p><h2 id="basket-title">MEMORY<br>BASKET<span class="green-period">.</span></h2></div><button type="button" class="icon-button panel-close" data-action="close-basket" aria-label="Close Memory Basket">×</button></div><div class="basket-body" data-basket-body></div><div class="basket-foot" data-basket-foot></div></aside>
     <div class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-hidden="true" data-confirm><p class="section-kicker">PERSONAL LIST</p><h2 id="confirm-title">Clear your<br>Memory Basket?</h2><p>This only removes the reminder saved on this device.</p><div class="confirm-actions"><button type="button" class="quiet-button" data-action="cancel-clear">KEEP PICKS</button><button type="button" class="danger-button" data-action="confirm-clear">CLEAR LIST</button></div></div>

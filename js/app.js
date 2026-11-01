@@ -3,10 +3,11 @@ const { categories, products } = window.IPADEL_MENU_DATA;
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const STORAGE_KEY = "ipadel-memory-basket-v1";
-const imagePath = "./assets/court-drinks.jpg";
+const imagePath = "./assets/court-drinks-optimized.jpg";
 const fallbackStyle = "radial-gradient(ellipse at 72% 42%,rgba(25,245,160,.24),transparent 22%),linear-gradient(135deg,#15334a,#061629)";
 const filters = $("[data-filters]");
 const grid = $("[data-products]");
+const signatureRail = $("[data-signature-products]");
 const search = $("[data-search]");
 const detailPanel = $("[data-detail]");
 const basketPanel = $("[data-basket]");
@@ -88,6 +89,24 @@ function renderProducts() {
     </article></div>`).join("");
   $$(".product-photo", grid).forEach(photo => setProductImage(photo, photo.style.backgroundPosition || "center"));
   observeReveals(grid);
+}
+function renderSignatureProducts() {
+  if (!signatureRail) return;
+  const concepts = [
+    { id: "citrus-cooler", name: "Green Point", note: "Citrus · Mint · Spark", badge: "SIGNATURE / 01", position: "84% 50%" },
+    { id: "iced-coffee", name: "Match Reset", note: "Cold Brew · Cloud · Ice", badge: "SIGNATURE / 02", position: "76% 56%" },
+    { id: "energy-fizz", name: "Golden Set", note: "Energy · Citrus · Fizz", badge: "SIGNATURE / 03", position: "90% 50%" },
+  ];
+  signatureRail.innerHTML = concepts.map((concept, index) => {
+    const product = getProduct(concept.id);
+    if (!product) return "";
+    return `<article class="signature-card" style="--signature-index:${index}">
+      <button class="signature-visual" type="button" data-action="details" data-id="${product.id}" aria-label="View ${escapeHtml(concept.name)} details"><span class="signature-photo" style="background-position:${concept.position}" aria-hidden="true"></span><span class="signature-orbit" aria-hidden="true"></span><span class="signature-badge">${concept.badge}</span></button>
+      <div class="signature-info"><span class="signature-kicker">${escapeHtml(product.category)} / CONCEPT</span><h3>${escapeHtml(concept.name)}</h3><p>${escapeHtml(concept.note)}</p><div><strong>${money(product.price)}</strong><button type="button" class="signature-add" data-action="quick-add" data-id="${product.id}" aria-label="Save ${escapeHtml(concept.name)} to Memory Basket">ADD +</button></div></div>
+    </article>`;
+  }).join("");
+  $$(".signature-photo", signatureRail).forEach(photo => setProductImage(photo, photo.style.backgroundPosition || "center"));
+  observeReveals(signatureRail);
 }
 function updateFilter() { renderFilters(); renderProducts(); }
 
@@ -432,7 +451,12 @@ document.addEventListener("click", event => {
   const { action, id, variant = "" } = target.dataset;
   if (action === "details") openDetails(id);
   if (action === "quick-add") addToBasket(getProduct(id));
-  if (action === "open-basket") { closePanels(); openPanel(basketPanel); }
+  if (action === "open-basket") {
+    closePanels();
+    renderBasket();
+    if (basketBody) basketBody.scrollTop = 0;
+    openPanel(basketPanel);
+  }
   if (action === "close-detail" || action === "close-basket") closePanels();
   if (action === "detail-minus" && detailPanel) { detailQuantity = Math.max(1, detailQuantity - 1); updateQuantityDisplay($("[data-detail-quantity]"), detailQuantity); }
   if (action === "detail-plus" && detailPanel) { detailQuantity = Math.min(99, detailQuantity + 1); updateQuantityDisplay($("[data-detail-quantity]"), detailQuantity); }
@@ -458,6 +482,7 @@ if (catalogEnabled) {
   $("[data-variant]").addEventListener("change", updateDetailPrice);
   renderFilters();
   renderProducts();
+  renderSignatureProducts();
 }
 overlay?.addEventListener("click", closePanels);
 document.addEventListener("keydown", event => {

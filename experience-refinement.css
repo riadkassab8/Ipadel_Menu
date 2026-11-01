@@ -45,3 +45,72 @@
   .basket-row-controls .remove-item { width:auto; }
 }
 @media(prefers-reduced-motion:reduce) { .product-card::before { transition:none; } }
+
+/* Mobile-first menu controls and complete Arabic reading direction. */
+html[dir="rtl"] body { direction:rtl; }
+html[dir="rtl"] .eyebrow { flex-direction:row-reverse; justify-content:flex-start; }
+html[dir="rtl"] .section-topline, html[dir="rtl"] .section-heading, html[dir="rtl"] .catalog-toolbar, html[dir="rtl"] .counter-reminder, html[dir="rtl"] .site-footer, html[dir="rtl"] .canteen-teaser { direction:rtl; }
+html[dir="rtl"] .section-topline, html[dir="rtl"] .footer-label { text-align:right; }
+html[dir="rtl"] .section-description, html[dir="rtl"] .demo-notice, html[dir="rtl"] .product-info, html[dir="rtl"] .detail-content, html[dir="rtl"] .basket-panel, html[dir="rtl"] .confirm-dialog { text-align:right; }
+html[dir="rtl"] .demo-notice { border-left:0; border-right:2px solid var(--lime); }
+html[dir="rtl"] .product-card::after { right:auto; left:11px; }
+html[dir="rtl"] .product-card::before { left:auto; right:0; }
+html[dir="rtl"] .product-bottom, html[dir="rtl"] .detail-price-row, html[dir="rtl"] .variant-wrap { direction:rtl; }
+html[dir="rtl"] .arrow, html[dir="rtl"] .back-home span, html[dir="rtl"] .canteen-back span, html[dir="rtl"] .memory-outline span { display:inline-block; transform:scaleX(-1); }
+html[dir="rtl"] .search-box kbd { margin-right:auto; margin-left:0; }
+html[dir="rtl"] .floating-basket-button { left:auto; right:max(22px,env(safe-area-inset-right)); }
+@media(max-width:640px) {
+  .site-header { position:sticky; top:0; }
+  .drinks-page .menu-section { padding:42px 15px 78px; }
+  .drinks-page .section-topline { font-size:8px; gap:12px; }
+  .drinks-page .section-heading { display:block; margin-bottom:22px; }
+  .drinks-page .section-heading h2 { font-size:clamp(43px,14vw,62px); }
+  .drinks-page .section-description { margin-top:14px; font-size:11px; }
+  .catalog-toolbar { display:flex; flex-direction:column; align-items:stretch; gap:12px; }
+  .filter-list { width:100%; order:1; }
+  .search-box { order:0; }
+  .drinks-page .product-grid { grid-template-columns:1fr; gap:10px; }
+  .drinks-page .product-card { grid-template-columns:104px minmax(0,1fr); min-height:126px; }
+  .drinks-page .product-visual { min-height:124px; }
+  .drinks-page .product-name { font-size:21px; }
+  .drinks-page .product-description { font-size:10px; }
+  .basket-panel { width:min(100%,460px); }
+  .basket-head { padding-top:max(58px,calc(18px + env(safe-area-inset-top))); }
+  .basket-body { padding-bottom:10px; }
+  .basket-foot { max-height:38dvh; }
+  .floating-basket-button { right:auto; left:max(16px,env(safe-area-inset-left)); bottom:max(18px,env(safe-area-inset-bottom)); }
+  html[dir="rtl"] .floating-basket-button { right:max(16px,env(safe-area-inset-right)); left:auto; }
+  html[dir="rtl"] .product-card::after { left:8px; }
+  html[dir="rtl"] .demo-notice { text-align:right; }
+}
+
+/* Experimental Signature Mixes showcase. */
+.signature-section { max-width:1304px; margin:0 auto 42px; padding:24px 0 0; border-top:1px solid rgba(25,245,160,.22); }
+.signature-heading { display:flex; align-items:end; justify-content:space-between; gap:28px; margin-bottom:18px; }
+.signature-heading h2 { margin:0; font:700 clamp(38px,5vw,66px)/.86 var(--head); letter-spacing:-.04em; }
+.signature-heading h2 em { color:var(--lime); font-style:normal; }
+.signature-heading > p { margin:0 0 4px; color:#9aafc1; font-size:11px; line-height:1.7; text-align:right; }
+.signature-rail { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.signature-card { min-width:0; display:grid; grid-template-columns:42% 58%; min-height:205px; overflow:hidden; border:1px solid rgba(25,245,160,.34); background:linear-gradient(125deg,rgba(25,245,160,.1),rgba(6,27,50,.92) 52%); box-shadow:0 15px 30px rgba(0,0,0,.13); animation:signature-in .55s both; animation-delay:calc(var(--signature-index) * 80ms); }
+.signature-visual { min-width:0; min-height:205px; position:relative; overflow:hidden; border:0; border-right:1px solid rgba(25,245,160,.22); background:#0a2a42; cursor:pointer; }
+.signature-photo { position:absolute; inset:0; background-size:auto 150%; background-repeat:no-repeat; transition:transform .5s var(--ease-standard); }
+.signature-visual:after { content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(3,19,38,.05),rgba(3,19,38,.72)); }
+.signature-orbit { position:absolute; z-index:1; width:125px; height:125px; left:50%; top:50%; border:1px solid rgba(25,245,160,.5); border-radius:50%; transform:translate(-50%,-50%); }
+.signature-orbit:after { content:""; position:absolute; inset:14px; border:1px solid rgba(25,245,160,.26); border-radius:50%; }
+.signature-badge { position:absolute; z-index:2; top:13px; left:13px; color:var(--lime); font-size:7px; font-weight:700; letter-spacing:.14em; }
+.signature-info { min-width:0; padding:20px 17px 15px; display:flex; flex-direction:column; justify-content:space-between; }
+.signature-kicker { color:#78d9b0; font-size:7px; font-weight:700; letter-spacing:.13em; }
+.signature-info h3 { margin:12px 0 4px; font:700 clamp(23px,2.3vw,32px)/.92 var(--head); letter-spacing:-.03em; }
+.signature-info p { margin:0; color:#a9bbc7; font-size:10px; line-height:1.5; }
+.signature-info > div { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:18px; }
+.signature-info strong { color:var(--lime); font-size:12px; }
+.signature-add { border:1px solid rgba(25,245,160,.55); padding:8px 9px; background:transparent; color:var(--white); cursor:pointer; font-size:8px; font-weight:700; letter-spacing:.08em; }
+.signature-add:hover { color:var(--deep); background:var(--lime); }
+.signature-card:hover .signature-photo { transform:scale(1.07); }
+@keyframes signature-in { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:900px) { .signature-rail { grid-template-columns:repeat(3,minmax(270px,1fr)); overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; scrollbar-width:thin; } .signature-card { scroll-snap-align:start; } }
+@media(max-width:640px) { .signature-section { margin-bottom:30px; padding-top:20px; } .signature-heading { display:block; } .signature-heading h2 { font-size:45px; } .signature-heading > p { margin-top:12px; text-align:left; font-size:10px; } .signature-rail { grid-template-columns:repeat(3,82vw); gap:10px; margin-right:-15px; padding-right:15px; } .signature-card { min-height:190px; } .signature-visual { min-height:190px; } .signature-info { padding:16px 13px 13px; } .signature-info h3 { font-size:25px; } }
+html[dir="rtl"] .signature-heading > p { text-align:left; }
+html[dir="rtl"] .signature-info { text-align:right; }
+html[dir="rtl"] .signature-visual { border-right:0; border-left:1px solid rgba(25,245,160,.22); }
+@media(prefers-reduced-motion:reduce) { .signature-card { animation:none; } .signature-photo { transition:none; } }

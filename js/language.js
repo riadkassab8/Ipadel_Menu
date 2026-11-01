@@ -46,7 +46,18 @@
     'chilled coffee over ice. cool head, quick restart.':'قهوة باردة مع الثلج لانتعاش سريع واستعداد من جديد.',
     'a bright citrus blend made for a sunny court-side break.':'مزيج حمضيات منعش لاستراحة مشمسة بجانب الملعب.',
     'simple, crisp hydration between games.':'مياه منعشة لترطيبك بين المباريات.','a sparkling pick-me-up when the match goes long.':'مشروب غازي يمنحك النشاط عندما تطول المباراة.',
-    'remove':'إزالة','drink':'مشروب','regular':'عادي','large':'كبير','single':'فردي','double':'مزدوج','demo':'تجريبي','view details':'عرض التفاصيل'
+    'remove':'إزالة','drink':'مشروب','regular':'عادي','large':'كبير','single':'فردي','double':'مزدوج','demo':'تجريبي','view details':'عرض التفاصيل',
+    'signature':'مميز','signature mixes':'الخلطات المميزة','experiment 01':'تجربة ٠١','creative blends for the pause between points.':'خلطات مبتكرة لاستراحة ما بين النقاط.','concept names and recipes are temporary.':'الأسماء والوصفات تجريبية مؤقتًا.','concept':'تجريبي','green point':'النقطة الخضراء','match reset':'استراحة المباراة','golden set':'الشوط الذهبي','citrus · mint · spark':'حمضيات · نعناع · انتعاش','cold brew · cloud · ice':'قهوة باردة · رغوة · ثلج','energy · citrus · fizz':'طاقة · حمضيات · فوران','add +':'أضف +',
+    'clear basket':'إفراغ السلة','done':'تم','estimated total · sample prices':'الإجمالي التقديري · أسعار تجريبية',
+    'your basket is waiting.':'سلتك بانتظارك.','browse drinks':'تصفّح المشروبات','personal reminder only.':'تذكير شخصي فقط.',
+    'take your list to the counter to order.':'اعرض قائمتك عند الكاونتر لإتمام الطلب.','not sent to staff.':'لا تُرسل إلى العاملين.',
+    'your list stays on this device. it is':'تبقى قائمتك على هذا الجهاز ولا يتم','not sent to staff':'إرسالها إلى العاملين',
+    'added to memory basket':'تمت الإضافة إلى سلة التذكّر','removed from memory basket':'تمت الإزالة من سلة التذكّر',
+    'memory basket cleared':'تم إفراغ سلة التذكّر','could not save on this device':'تعذّر الحفظ على هذا الجهاز',
+    'court side':'بجانب الملعب','court side / personal reset':'بجانب الملعب / استراحة شخصية','match point':'نقطة الحسم',
+    'remember your reset':'تذكّر استراحتك','personal reminder · stored on this device':'تذكير شخصي · محفوظ على هذا الجهاز',
+    'sample menu':'قائمة تجريبية','example price':'سعر توضيحي','choose size':'اختر الحجم','size':'الحجم',
+    'view':'عرض','details':'التفاصيل','no match / 00':'لا توجد نتائج / ٠٠'
   };
   const normalize = value => value.replace(/\s+/g, ' ').trim().toLocaleLowerCase('en');
   function translate(value) {

@@ -99,7 +99,7 @@ h1,h2,h3,.hero-link-icon,.product-name,.basket-head h2,.detail-content h2,.foote
 .canteen-teaser a { font-size:9px; font-weight:700; letter-spacing:.1em; }
 .canteen-teaser a span { color:var(--lime); margin-left:8px; }
 .product-visual { display:block; padding:0; border:0; }
-.product-photo { background-image:url('./assets/court-drinks.jpg'); }
+.product-photo { background-image:url('./assets/court-drinks-optimized.jpg'); }
 .basket-menu-link { color:var(--white); }
 .reveal { opacity:0; transform:translateY(14px); transition:opacity var(--duration-smooth) var(--ease-standard),transform var(--duration-smooth) var(--ease-standard); transition-delay:calc(var(--card-index, 0) * 45ms); }
 .reveal.is-visible { opacity:1; transform:translateY(0); }
@@ -207,3 +207,10 @@ h1,h2,h3,.hero-link-icon,.product-name,.basket-head h2,.detail-content h2,.foote
   .reveal { opacity:1; transform:none; }
   .basket-row.is-entering,.basket-empty.is-entering { opacity:1; transform:none; }
 }
+
+/* Mobile basket layout: keep the product list visible before the actions. */
+.basket-panel { display:flex; flex-direction:column; overflow:hidden; }
+.basket-head { flex:0 0 auto; }
+.basket-body { flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+.basket-foot { flex:0 0 auto; max-height:min(34dvh,280px); overflow-y:auto; padding-bottom:max(18px,env(safe-area-inset-bottom)); }
+.basket-body:empty { min-height:160px; }

@@ -6,24 +6,11 @@
     <meta name="theme-color" content="#061b32">
     <title>IPADEL | Good drinks. Great games.</title>
     <meta name="description" content="A club-side menu for the break between matches. Browse drinks and keep a personal reminder on this device.">
-    <link rel="icon" type="image/png" href="./assets/ipadel-logo-original.png">
+    <link rel="icon" type="image/png" href="./assets/ipadel-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-                emerald: {
-                  400: '#34d399',
-                }
-            }
-          }
-        }
-      }
-    </script>
+    <link rel="stylesheet" href="./assets/tailwind.css">
     <link rel="stylesheet" href="./menu.css">
     <link rel="stylesheet" href="./menu-overrides.css">
     <link rel="stylesheet" href="./premium-motion.css">
@@ -36,7 +23,7 @@
   </head>
   <body class="home-page min-h-screen antialiased selection:bg-[#19f5a0] selection:text-[#031326]">
     <header class="site-header grid grid-cols-[minmax(58px,1fr)_auto_auto] min-[381px]:grid-cols-[minmax(68px,1fr)_auto_auto] min-[641px]:grid-cols-[minmax(112px,1fr)_auto_auto]">
-      <a class="brand" href="index.html" aria-label="IPADEL home"><img src="./assets/ipadel-logo-original.png" alt="IPADEL — Start Now" class="brand-mark"></a>
+      <a class="brand" href="index.html" aria-label="IPADEL home"><img src="./assets/ipadel-logo.png" alt="IPADEL — Start Now" class="brand-mark"></a>
       <nav class="main-nav justify-self-center" aria-label="Main navigation">
         <a href="drinks.html" class="nav-link">Drinks</a>
         <a href="canteen.html" class="nav-link">Canteen <span class="nav-soon">soon</span></a>
@@ -75,7 +62,7 @@
     </main>
 
     <footer class="site-footer reveal">
-      <a href="index.html" class="footer-brand"><img src="./assets/ipadel-logo-original.png" alt="IPADEL — Start Now"></a>
+      <a href="index.html" class="footer-brand"><img src="./assets/ipadel-logo.png" alt="IPADEL — Start Now"></a>
       <div class="footer-mantra">GOOD DRINKS.<br><strong>GREAT GAMES.</strong></div>
       <div class="footer-repeat">PLAY.<br>RESET.<br><em>REPEAT.</em></div>
       <div class="footer-label">CLUB-SIDE MENU <span>IPADEL / START NOW</span></div>

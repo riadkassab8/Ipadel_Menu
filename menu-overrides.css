@@ -216,59 +216,46 @@ h1,h2,h3,.hero-link-icon,.product-name,.basket-head h2,.detail-content h2,.foote
 .basket-body:empty { min-height:160px; }
 
 
-/* Uiverse-inspired direction: dark neon-outline arrow button, adapted for IPADEL colors and paired menu cards. Source: https://uiverse.io/gharsh11032000/loud-chicken-53 */
+/* Minimal, accessible paired links with React Icons Feather SVGs embedded inline. */
 .home-page .hero-actions { max-width:390px; gap:10px; }
 .home-page .hero-link {
-  position:relative; isolation:isolate; overflow:hidden;
-  height:72px; min-height:72px; padding:0 18px;
-  grid-template-columns:40px minmax(0,1fr) 30px;
-  border:1px solid rgba(25,245,160,.34); border-radius:7px;
-  background:linear-gradient(112deg,#09233d,#06182c);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 9px 24px rgba(0,0,0,.16);
-  transition:transform 280ms cubic-bezier(.22,1,.36,1),border-color 220ms ease,background 320ms ease,box-shadow 320ms ease;
-}
-.home-page .hero-link::before {
-  content:""; position:absolute; z-index:0; inset:0; pointer-events:none;
-  background:linear-gradient(108deg,transparent 26%,rgba(255,255,255,.2) 47%,transparent 67%);
-  transform:translateX(-125%); transition:transform 680ms cubic-bezier(.22,1,.36,1);
+  height:70px; min-height:70px; padding:0 18px;
+  grid-template-columns:28px minmax(0,1fr) 20px;
+  gap:16px; border:1px solid rgba(25,245,160,.3); border-radius:5px;
+  background:#09223a; box-shadow:none;
+  transition:transform 180ms ease,background-color 180ms ease,border-color 180ms ease,box-shadow 180ms ease;
 }
 .home-page .hero-link > * { position:relative; z-index:1; }
 .home-page .hero-link-primary {
-  border-color:rgba(157,255,215,.52); color:#052b26;
-  background:linear-gradient(112deg,#4ce0af 0%,#70d5ad 56%,#9bdcbb 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 10px 25px rgba(25,245,160,.12);
+  border-color:#6bd9b0; color:#062b25; background:#6bd9b0;
 }
-.home-page .hero-link-secondary { color:#f4f8f8; background:linear-gradient(112deg,#09233d,#06182c); }
+.home-page .hero-link-secondary { color:#f4f8f8; background:#09223a; }
 .home-page .hero-link-icon {
-  width:32px; height:32px; display:grid; place-items:center;
-  border:1px solid rgba(25,245,160,.42); border-radius:50%;
-  color:var(--lime); font-size:12px; font-weight:700;
-  transition:background 220ms ease,color 220ms ease,transform 280ms ease;
+  width:24px; height:24px; display:grid; place-items:center;
+  border:0; border-radius:0; color:#087653; font-size:inherit;
 }
-.home-page .hero-link-primary .hero-link-icon { color:#07533f; border-color:rgba(5,43,38,.22); }
-.home-page .hero-link strong { font-size:12px; letter-spacing:.14em; }
-.home-page .hero-link-primary strong { color:#052b26; }
-.home-page .hero-link small { color:#bdd0dc; font-size:8px; letter-spacing:.13em; }
-.home-page .hero-link-primary small { color:rgba(5,43,38,.72); }
+.home-page .hero-link-secondary .hero-link-icon { color:var(--lime); }
+.home-page .hero-link-icon svg { display:block; width:22px; height:22px; }
+.home-page .hero-link strong { font-size:12px; letter-spacing:.12em; }
+.home-page .hero-link-primary strong { color:#062b25; }
+.home-page .hero-link small { color:#b7c7d3; font-size:8px; letter-spacing:.11em; }
+.home-page .hero-link-primary small { color:rgba(6,43,37,.72); }
 .home-page .hero-link .arrow {
-  width:30px; height:30px; display:grid; place-items:center;
-  border:1px solid rgba(25,245,160,.3); border-radius:50%; color:var(--lime); font-size:14px;
-  transition:transform 280ms cubic-bezier(.22,1,.36,1),background 220ms ease,color 220ms ease;
+  display:inline-block; color:var(--lime); font-size:17px; justify-self:end;
+  transition:transform 180ms ease;
 }
-.home-page .hero-link-primary .arrow { color:#07533f; border-color:rgba(5,43,38,.2); }
-.home-page .hero-link:hover { transform:translateY(-3px); border-color:rgba(25,245,160,.78); box-shadow:0 14px 30px rgba(25,245,160,.15),inset 0 1px 0 rgba(255,255,255,.08); }
-.home-page .hero-link:hover::before { transform:translateX(125%); }
-.home-page .hero-link:hover .arrow { transform:translate(3px,-2px); background:rgba(25,245,160,.11); }
-.home-page .hero-link-primary:hover { border-color:rgba(255,255,255,.66); background:linear-gradient(112deg,#64edbd 0%,#8de3bc 58%,#b1e8ca 100%); }
-.home-page .hero-link-secondary:hover { background:linear-gradient(112deg,#0c2a45,#08213a); }
-.home-page .hero-link:focus-visible { outline:3px solid rgba(25,245,160,.48); outline-offset:4px; }
+.home-page .hero-link-primary .arrow { color:#087653; }
+.home-page .hero-link:hover { transform:translateY(-2px); border-color:var(--lime); box-shadow:0 7px 18px rgba(0,0,0,.12); }
+.home-page .hero-link-primary:hover { background:#83e2bc; border-color:#83e2bc; }
+.home-page .hero-link-secondary:hover { background:#0b2a45; }
+.home-page .hero-link:hover .arrow { transform:translate(2px,-1px); }
+.home-page .hero-link:focus-visible { outline:2px solid var(--lime); outline-offset:4px; }
 @media(max-width:640px) {
   .home-page .hero-actions { gap:9px; }
-  .home-page .hero-link { height:66px; min-height:66px; padding:0 12px; grid-template-columns:34px minmax(0,1fr) 28px; }
-  .home-page .hero-link-icon { width:29px; height:29px; }
-  .home-page .hero-link .arrow { width:27px; height:27px; }
+  .home-page .hero-link { height:66px; min-height:66px; padding:0 13px; grid-template-columns:25px minmax(0,1fr) 18px; gap:12px; }
+  .home-page .hero-link-icon svg { width:21px; height:21px; }
   .home-page .hero-link small { font-size:7px; letter-spacing:.07em; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .home-page .hero-link,.home-page .hero-link::before,.home-page .hero-link .arrow,.home-page .hero-link-icon { transition:none; }
+  .home-page .hero-link,.home-page .hero-link .arrow { transition:none; }
 }

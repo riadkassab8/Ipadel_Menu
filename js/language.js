@@ -10,6 +10,7 @@
     'fuel':'استعد','your':'لعبتك','game.':'!','good drinks. great games.':'مشروبات منعشة. مباريات رائعة.','good drinks.':'مشروبات منعشة.','great games.':'مباريات رائعة.',
     'ipadel | good drinks. great games.':'آيبادل | مشروبات منعشة. مباريات رائعة.','the drinks bar | ipadel':'ركن المشروبات | آيبادل','the canteen | ipadel':'الكانتينا | آيبادل',
     'drinks':'المشروبات','canteen':'الكانتينا','soon':'قريبًا','refresh your game':'انتعش واستعد للعب','refresh your game.':'انتعش واستعد للعب.','menu coming soon':'القائمة قريبًا',
+    'services':'خدماتنا','services | ipadel':'خدماتنا | آيبادل','services and hourly prices':'الخدمات والأسعار بالساعة','services / hourly rates':'خدماتنا / الأسعار بالساعة','view hourly rates':'عرض أسعار الساعة','hourly rates':'الأسعار بالساعة','egp / hour':'ج.م / الساعة','playstation':'بلايستيشن','padel':'بادل','ping pong':'بينج بونج','ipadel / club menu — 03':'آيبادل / قائمة النادي — ٠٣','ipadel / services':'آيبادل / خدماتنا',
     'memory basket':'سلة التذكّر','memory':'التذكّر','basket':'السلة','open memory basket':'افتح سلة التذكّر','close memory basket':'أغلق سلة التذكّر',
     'your personal counter reminder, saved on this device only.':'تذكيرك الشخصي للطلب من الكاونتر، محفوظ على هذا الجهاز فقط.',
     'refreshing drinks beside the padel court':'مشروبات منعشة بجوار ملعب البادل','between matches':'بين المباريات','ipadel club / 01':'آيبادل / النادي ٠١',
@@ -48,6 +49,7 @@
     'simple, crisp hydration between games.':'مياه منعشة لترطيبك بين المباريات.','a sparkling pick-me-up when the match goes long.':'مشروب غازي يمنحك النشاط عندما تطول المباراة.',
     'remove':'إزالة','drink':'مشروب','regular':'عادي','large':'كبير','single':'فردي','double':'مزدوج','view details':'عرض التفاصيل',
     'signature':'مميز','signature mixes':'الخلطات المميزة','ipadel / signature 01':'آيبادل / الخلطات المميزة ٠١','creative blends for the pause between points.':'خلطات مبتكرة لاستراحة ما بين النقاط.','green point':'النقطة الخضراء','match reset':'استراحة المباراة','golden set':'الشوط الذهبي','citrus · mint · spark':'حمضيات · نعناع · انتعاش','cold brew · cloud · ice':'قهوة باردة · رغوة · ثلج','energy · citrus · fizz':'طاقة · حمضيات · فوران','add +':'أضف +',
+    'services':'الخدمات','the club':'النادي','play more.':'العب أكثر.','stay longer.':'استمتع بوقتك.','the main court':'الملعب الرئيسي','bring your game to the court.':'خذ لعبتك إلى الملعب.','game room':'غرفة الألعاب','keep the competition going.':'واصل المنافسة.','table play':'ألعاب الطاولة','fast points. quick reset.':'نقاط سريعة. استراحة سريعة.','good to know':'معلومة مهمة','prices are shown per hour. ask the club team for current availability and details.':'الأسعار موضحة بالساعة. اسأل فريق النادي عن التوافر والتفاصيل الحالية.','hourly rates':'أسعار الساعة','egp / hour':'ج.م / الساعة','the club':'النادي',
     'clear basket':'إفراغ السلة','done':'تم',
     'your basket is waiting.':'سلتك بانتظارك.','browse drinks':'تصفّح المشروبات','personal reminder only.':'تذكير شخصي فقط.',
     'take your list to the counter to order.':'اعرض قائمتك عند الكاونتر لإتمام الطلب.','not sent to staff.':'لا تُرسل إلى العاملين.',
@@ -100,7 +102,9 @@
     const page = location.pathname.toLowerCase();
     document.title = translate(document.title);
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.content = page.endsWith('drinks.html')
+    if (meta) meta.content = page.endsWith('services.html')
+      ? 'أسعار خدمات نادي آيبادل بالساعة: بلايستيشن، بادل، وبينج بونج.'
+      : page.endsWith('drinks.html')
       ? 'تصفّح قائمة مشروبات آيبادل، واحفظ تذكيرًا شخصيًا على جهازك للطلب من الكاونتر.'
       : page.endsWith('canteen.html')
         ? 'قائمة كانتينا آيبادل قريبًا. تصفّح المشروبات في هذه الأثناء.'
